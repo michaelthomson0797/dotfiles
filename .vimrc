@@ -25,6 +25,8 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'vim-pandoc/vim-pandoc'
 
+" tmux
+Plugin 'christoomey/vim-tmux-navigator'
 
 "YCM extra config
 Plugin 'rdnetto/YCM-Generator'
