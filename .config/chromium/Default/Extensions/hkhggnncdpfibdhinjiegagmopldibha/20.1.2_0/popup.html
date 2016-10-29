@@ -1,0 +1,719 @@
+<html>
+<head>
+	<title>Checker Plus for Google Calendar</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+	<link rel="icon" href="images/icons/icon-32_default.png" sizes="32x32"/>
+	<link rel="icon" href="images/icons/icon-64.png" sizes="64x64"/> <!-- Used when usig Chrome menu > Tools > Creating application shortcut > Pin to taskbar -->
+
+	<style id="calendarColors"></style>
+
+	<style>
+		body {margin:0;padding:0;font-family: Arial,sans-serif;font-size:14px}
+		
+		@keyframes anim {
+			0% {
+    			display: none;
+    			opacity: 0;
+  			}
+  			1% {
+    			display: block;
+  			}
+  			100% {
+    			opacity: 1;
+    			/* bug: couldn't use transform translatex because if i had polymer menu dropdown inside the element then the dropdown would be off???  */
+  			}
+		}
+		
+		.hide {display:none}
+		
+		html[calendarView] body {height:500px}
+		html:not([calendarView='agenda']) body {width:650px}
+		html:not(.widget)[calendarView='agenda'] body {width:500px} /* makes sure edit bubble code still works: document.body.clientWidth >= 500 */
+		
+		.widget #close {display:none}
+		
+		[drawer] {background-color:#fafafa}
+		[main] {background-color:white;z-index:0}
+		[main]::before {content:' ';position:absolute;top:0;left:0;height:100%;width:100%;transition:opacity 0.1s ease-in;opacity:0}
+		
+		#mainContent {overflow-x:hidden}
+		
+		#topLeft {white-space:nowrap}
+		#topLeft paper-icon-button {vertical-align:middle}
+		
+		.open-below {top:-8px;left:15px}
+    	
+		#bigAddEventButtonWrapper {display:none;z-index:5;position:absolute;right:20px;bottom:20px}
+		#bigAddEventButton {transition: transform 0.2s ease-in;box-shadow:0 0 6px rgba(0,0,0,.16),0 6px 12px rgba(0,0,0,.32)}
+		#bigAddEventButton.rotated {transform: rotate(90deg)}
+		html[calendarView='agenda'] #bigAddEventButtonWrapper {right:40px}
+		
+		#topRight {display:none}
+		#topRight paper-menu-button {padding:0}
+		
+		#quickAddWrapper {display:none}
+		#quickAddOptions {display:none}
+		#quickAddCalendars, #searchCalendars {max-width:100px}
+		#save {min-width:4em;margin-left:7px}
+		#quickAddWrapper.inputEntered #quickAddOptions {display:flex}
+		html.quickAddVisible #menu {display:none}
+		html.quickAddVisible #topLeft {display:none}
+		html.quickAddVisible #quickAddWrapper {display:flex;z-index:100}
+		html.quickAddVisible #quickAddWrapper.inputEntered {top:-1px}
+		html.quickAddVisible #topRight {display:none}
+		#quickAdd {background-color: inherit;font-size:20px;-webkit-appearance: none;-moz-appearance: none;padding-left:5px;outline:none;border:none}
+		html:not([calendarView='agenda']) #quickAdd {width:249px} /* patch really for Firefox only because the placeholder Dinner at Bobs text was being clipped */
+		
+		html:not([calendarView='agenda']) #goToToday {display:none}
+		
+		#searchInputWrapper {display:none;z-index:2}
+		#searchInput {background-color: inherit;font-size:20px;-webkit-appearance: none;-moz-appearance: none;padding:10px;outline:none;border:none}
+		html.searchInputVisible #searchInputWrapper {animation: anim .3s ease-in-out forwards}
+		html.searchInputVisible #menu {display:none}
+		html.searchInputVisible #topLeft {display:none}
+		html.searchInputVisible #searchInputWrapper {display:flex}
+		html.searchInputVisible #topRight {display:none}
+		html.searchInputVisible #betaCalendarWrapper {display:none}
+		html.searchInputVisible #agenda {display:block}
+		html.searchInputVisible .agendaMonthHeader {font-size:1em}
+		
+		#calendarTitle {cursor:pointer;padding:5px;text-align:center;display:inline-block;min-width:135px;font-size:1.2em;vertical-align:middle}
+		html[calendarView='agendaWeek'] #calendarTitle, html[calendarView='fourWeeks'] #calendarTitle {min-width:200px}
+		#calendarTitleDropdown {display:none;cursor:pointer;margin-left:1px;transition:transform 218ms cubic-bezier(0.4, 0, 0.2, 1)}
+		#mainToolbar.tall #calendarTitleDropdown {transform: rotate(180deg)}
+		
+		a:visited {color:blue}
+		a {font-family:Arial, sans-serif;xxfont-size:13px}
+		
+		#betaLoading {top:50%;left:45%;font-size:16px;background:#eee;border-radius:5px;padding:5px;color:black;font-weight:bold}
+		
+		#donate:hover {text-decoration:underline}
+		#alarmDetails {clear:both;display:none;border-radius:5px;background:#E3E9FF;padding:5px;margin-bottom:8px}
+		
+		#title:hover {background-color:transparent}
+		#title:focus:before {background:none}
+
+		html #availableSkins, html #addedSkins {width:230px;height:200px;padding:4px}
+		html #skinCSS[href], html #skinAuthor[href] {color:blue}
+		
+		#skinsDialog {opacity:0.9;transition:opacity 0.3s ease-in-out}
+		#skinsDialog.previewBackground {opacity:0}
+		
+		#skinWatermark {display:none;position:absolute;left:8px;bottom:5px;opacity:0.3;color:black;text-decoration:none;transition:opacity 0.1s ease-in-out;z-index:99}
+		#skinWatermark:hover {opacity:0.7}
+		.rtl #skinWatermark {left:auto;right:8px}
+		#skinWatermark.visible {display:block}
+		
+		#visibleCalendars {font-size:16px;margin-left:18px}
+		#visibleCalendars paper-checkbox {margin:5px 0}
+		#visibleCalendars .visibleCalendarLabel {text-overflow: ellipsis;max-width:180px;overflow-x: hidden;white-space: nowrap}
+		
+		#login {display:none;background:#E8EEFA;padding:5px;border:1px solid lightblue}
+		#calendar {border-width:0;padding-top:10px}
+
+    	#betaCalendar.ctrlKey .fc-event.fc-draggable, #betaCalendar.ctrlKey .fc-event[href] {cursor:copy}
+    	#betaCalendar .fc-event {border-radius:0}
+    	#betaCalendar .fc-toolbar {opacity:0;height:0;overflow-y:hidden;margin:0}
+    	#betaCalendar .fc-left h2 {margin-top:3px}
+    	#betaCalendar .fc-left .fc-button {min-width:2em}
+    	#betaCalendar .fc-button {margin:0 -1px;-webkit-padding-start:6px;-moz-padding-start:6px;-webkit-padding-end:6px;-moz-padding-end:6px}
+    	#betaCalendar .fc-right  .fc-state-active {background:#d2d2d2}
+    	#betaCalendar .fc td {border-color:#eee}
+    	#betaCalendar.fc-rtl .fc-content {direction:rtl}
+    	#betaCalendar .fc-more {color:blue}
+    	#betaCalendar .fc-state-highlight {background-color:rgba(255, 252, 199, 0.54) !important}
+    	#betaCalendar .fc-agendaDay-view .fc-state-highlight {background-color:white} /* removed !important because i wanted skins background to show */
+    	body:not(.skin_96) #betaCalendar .fc-month-view .timedEvent, body:not(.skin_96) #betaCalendar .fc-fourWeeks-view .timedEvent {background-color:transparent !important;border-color:transparent !important}
+		#betaCalendar .snoozedEvent {opacity:0.6}
+		#betaCalendar .snoozedEvent .fc-title {background-image:url("images/snoozes.png");background-repeat:no-repeat;padding-left:18px}
+		#betaCalendar .fcDeclinedEvent .fc-title {text-decoration:line-through;opacity:0.7}
+    	#betaCalendar.highlightPastDays .fc-past {background-color:transparent !important;opacity:0.1 !important}
+    	#betaCalendar.highlightPastDays .fc-month-view .fc-day.fc-past, #betaCalendar.highlightPastDays .fc-fourWeeks-view .fc-day.fc-past {border-color:transparent !important}
+    	#betaCalendar.highlightPastDays .fc-event.pastEvent {opacity:0.3}
+    	#betaCalendar.highlightPastDays .fc-more-cell.pastEvent {opacity:0.3}
+    	#betaCalendar.highlightWeekends .fc-sat, #betaCalendar.highlightWeekends .fc-sun {background:#ddd;opacity:1}
+    	#betaCalendar .timeline {position: absolute;left: 59px;border: none;border-top: 1px solid red;width: 100%;margin: 0;padding: 0;z-index: 999}
+    	#betaCalendar.fc-ltr .fc-agendaWeek-view .fc-time-grid .fc-event-container {margin-right:8.5%} /* Add space in weekview so user can add another event at same start time ref: https://jasonsavard.com/forum/discussion/comment/4322#Comment_4322 */
+    	#betaCalendar .fc-week-number {background-color:#FAFAFA;font-size:80%;font-style:italic}
+    	
+    	#agenda {display:none;padding:5px}
+    	.agendaMonthHeader {font-size:2.4em;color:gray;padding:10px 0}
+    	.agendaDay {margin-bottom:20px}
+    	.agendaDay.today {padding-top:10px}
+    	.agendaDay.today .agendaDateWrapper {color:rgb(2, 154, 228)}
+    	.agendaDateWrapper {width:38px;color:#aaa;margin-left:4px}
+    	.agendaDate {font-size:1.8em}
+    	.agendaDayEvents {margin-top:4px}
+    	.agendaEvent {color:white;margin-bottom:6px;padding:5px 9px;border-radius:2px;cursor:pointer}
+    	.agendaEvent.pastEvent, .agendaEvent.declined {opacity:0.3}
+    	.agendaEventTitleWrapper {text-overflow: ellipsis;overflow:hidden}
+    	.agendaEventTime, .agendaEventLocation, .agendaEventVideo {margin-top:2px;font-size:0.8em}
+    	.agendaEventLocation {word-break: break-word}
+    	.placeHolderForToday {padding:8px 0;cursor:pointer}
+    	
+    	html[calendarView='agenda'] #betaCalendar {display:none}
+    	html[calendarView='agenda'] #agenda {display:block}
+    	html[calendarView='agenda'] #calendarTitle {min-width:inherit}
+    	html[calendarView='agenda'] #prev, html[calendarView='agenda'] #next {display:none}
+    	html[calendarView='agenda'] #calendarTitleDropdown {display:inline-block}
+    	
+		.fc-unthemed .fc-popover, .fc-unthemed .fc-row, .fc-unthemed hr, .fc-unthemed tbody, .fc-unthemed td, .fc-unthemed th, .fc-unthemed thead {border-color: #F0F0F0 !important}
+		
+		#clickedEventDialog {width:400px}
+		#clickedEventDialog a {text-decoration:none}
+    	#clickedEventTitle {font-size:1.2em;cursor:pointer}
+    	#clickedEventsTopRightButtons {margin-right: -23px;margin-top: -23px;color:#666}
+    	#clickedEventOpenInCalendar {margin-right:-12px}
+    	xx#clickedEventDate {margin-bottom:10px}
+    	.clickedEventSubDetailsLabel, .clickedEventSubDetails {margin:1px 8px 1px 0;display:inline-block;vertical-align:top}
+    	.clickedEventSubDetailsLabel {width:70px;color:gray}
+    	.clickedEventSubDetails {overflow:auto;max-height:60px}
+    	#clickedEventAttendeesWrapper .clickedEventSubDetails a {color:gray}
+    	.goingStatusHighlighted {font-weight:bold;text-decoration:none;color:black}
+    	
+    	#mainToolbar {transition:height 300ms ease-in-out}
+    	#mainToolbar.tall {height:300px}
+    	
+    	#datepickerWrapper {display:none;margin-bottom:10px}
+    	.ui-datepicker {margin:0 auto}
+    	.ui-widget {font-family:arial}
+    	.ui-widget-header {border:none;background:none}
+    	.ui-state-default, .ui-widget-content .ui-state-default {border:none;background:none}
+    	.ui-state-default, .ui-widget-content .ui-state-default:hover {background:#f3f3f3}
+    	.ui-datepicker td a {text-align:center}
+    	.ui-datepicker-today {background-color:#FFFCC7}
+    	.ui-datepicker-current-day {background-color:#eee}
+    	
+    	#pendingNotifications {display:none;-webkit-animation: 0.7s ease-in-out 0s normal none 3 swing;-moz-animation: 0.7s ease-in-out 0s normal none 3 swing;-webkit-transform-origin: center top;-moz-transform-origin: center top}
+    	#pendingNotifications iron-icon {color:#FFD000}
+    	
+    	#newsNotification {opacity:1}
+    	#newsNotification iron-icon {color:green}
+    	
+
+		#createEventDialog {padding:5px 0}
+  	    #createEventDialog ::-webkit-input-placeholder, #createEventDialog ::-moz-placeholder {opacity:0.3}
+    	#createEventDialog > * {margin-top:0}
+    	
+    	#createEventDate {text-align:right;margin-top:5px}
+    	#createEventDialog paper-dialog-scrollable .scrollable {max-height:80vh}
+    	
+    	#eventStartEndTimeWrapper input {font-size:1em;margin:20px 0 5px 0;padding:2px 0 4px 2px;width:80px;border:none;border-bottom:1px solid black}
+    	#eventStartEndTimeWrapper input:focus {outline:none;border-bottom:1px solid #0016B1}
+    	
+  		.calendarReminder[method='sms'] {display:none !important}
+  		.calendarReminder paper-dropdown-menu {max-width:100px}
+  		.calendarReminder paper-dropdown-menu.reminderMethodWrapper {max-width:123px}
+  		.reminderValuePerPeriod {width:40px;text-align:end}
+  		#createEventCalendar {width:100%}
+  		#createEventCalendar paper-menu-button, .calendarReminder paper-dropdown-menu:first-child paper-menu-button {margin-left:-7px}
+  		#eventDescription {max-height: 114px;max-width:290px;overflow: hidden} /* patch because setting .value programmatically on paper-textarea would not obey the maxrows */
+  		#eventDescription textarea {max-height:86px}
+  		#currentPage {margin-top:14px}
+  		#addReminder {margin:-11px 0 0 -15px}
+  		
+  		.eventColorIndicator {vertical-align: middle;font-size:2px;margin-left:3px;padding:3px;border-radius:1px}
+  		
+  		.fc-event .eventIcon {margin-right:3px;display:inline-block;vertical-align:middle}
+  		.fc-event .eventIcon svg {max-height:11px !important;max-width:11px !important}
+  		#clickedEventDialog .eventIcon {margin-right:10px}
+  		.agendaDay .eventIcon {vertical-align:middle}
+  		.agendaDay .eventIcon svg {fill:white;max-height:13px !important;margin-right:6px}
+  		.agendaDay .eventIcon svg path {stroke:white !important}
+  		
+  		.field {margin:10px 0}
+  		.fieldIcon {color:#8a8a8a}
+  		#createEventDialog .fieldIcon {margin:21px 11px 0 -5px}
+  		#createEventDialog event-reminders .fieldIcon {margin:3px 2px 0 -7px}
+  		#clickedEventDialog .fieldIcon {margin-right:14px;width:21px;height:21px}
+  		
+  		#eventToast paper-button {margin:0;min-width:20px}
+  		#eventToast .eventTitle {color:#fff38a;font-size:120%}
+  		
+  		.dayOfYear {color:#ccc;font-size:9px;margin:2px 0 0 1px}
+  		
+  		.colorChoice {position:relative;width:21px;height:21px;display:inline-block;margin-right:7px;cursor:pointer}
+  		
+		@-webkit-keyframes spin {
+			to {
+				-webkit-transform: rotate(1turn);
+			}
+		}
+		
+		.rotate {-webkit-animation: spin 1s linear infinite;-moz-animation: spin 1s linear infinite}
+    	
+    	@-webkit-keyframes swing {
+    		0%   {-webkit-transform: rotate(0deg);-moz-transform: rotate(0deg)}
+			25%  {-webkit-transform: rotate(-15deg);-moz-transform: rotate(-15deg)}
+    		50%  {-webkit-transform: rotate(0deg);-moz-transform: rotate(0deg)}
+			75%  {-webkit-transform: rotate(15deg);-moz-transform: rotate(15deg)}
+			100% {-webkit-transform: rotate(0deg);-moz-transform: rotate(0deg)}
+		}
+		
+		@media screen and (min-width: 251px) {
+			#bigAddEventButtonWrapper {display:inline-block}
+			.agendaDateWrapper {width:50px}
+			html.searchInputVisible .agendaMonthHeader {display:none}
+			html.searchInputVisible .agendaDateWrapper {width:90px;font-size:0.5em;margin-top:10px}
+		}
+		
+		@media screen and (min-width: 500px) {
+			#topRight {display:block}
+		}
+		
+		@media screen and (min-width: 650px) {
+			#quickAddCalendars, #searchCalendars {max-width:130px}
+			.share-button {display:inline-block !important}
+		}
+		
+		@media (min-device-width: 1367px) {
+			html[calendarView] body {height:650px}
+			html:not([calendarView='agenda']) body {width:800px}
+		}
+		
+	</style>
+
+	<link href="fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css">
+	
+	<script src="js/webcomponents-lite.js"></script>
+	
+	<link rel="import" href="extensionCommon.html"> <!-- html issue: upper case in extensionCommon.html is lowercased after importing?? -->
+
+	<link id="custom-icons" rel="import" href="custom-icons.html">
+
+	<link rel="stylesheet" href="css/jquery-ui.css"/>
+  	<link rel="stylesheet" href="css/jquery.timepicker.css"/> 
+
+	<script src="js/jquery.js"></script>
+  	<script src="js/jquery-ui.js"></script>
+  	<script src="js/jquery.timepicker.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/extensionCommon.js"></script>
+	
+	<script src="js/lz-string.js"></script>
+	<script src="js/moment.js"></script>
+	<script src="js/checkerPlusForCalendar.js"></script>
+	<script src="fullcalendar/fullcalendar.js"></script>
+	<script src="js/popup.js"></script>
+	
+</head>
+<body id="calendarExtensionPopup" class="layout vertical" unresolved unresolved2>
+	<paper-progress id="progress" indeterminate style="z-index:1;position:absolute;opacity:0;width:100%;height:4px"></paper-progress>
+	<paper-drawer-panel id="drawerPanel" force-narrow="true" disable-edge-swipe drawer-width="240px">
+		<paper-header-panel drawer mode="waterfall">
+			<paper-toolbar>
+				<paper-icon-item id="title">
+				  <iron-icon src="images/icons/icon-64.png" item-icon style="opacity:1"></iron-icon>
+				  Checker Plus
+				</paper-icon-item>
+				<paper-icon-button id="closeDrawer" icon="chevron-left" style="right: -12px"></paper-icon-button>
+			</paper-toolbar>
+			<paper-item class="separator" style="margin-top:0" disabled></paper-item>
+			<div id="visibleCalendars" class="layout vertical"></div>
+			<paper-item class="separator" style="margin-top:8px" disabled></paper-item>
+			<paper-icon-item class="options">
+				<iron-icon icon="settings" item-icon></iron-icon>
+				<span msg="options"></span>
+			</paper-icon-item>
+			<paper-icon-item class="contribute">
+				<iron-icon icon="accessibility" item-icon></iron-icon>
+				<span msg="contribute"></span>
+			</paper-icon-item>
+			<paper-icon-item class="help">
+				<iron-icon icon="help" item-icon></iron-icon>
+				<span msg="help"></span>
+			</paper-icon-item>
+		</paper-header-panel>
+		<paper-header-panel main mode="waterfall">
+			<a id="skinWatermark" href="https://jasonsavard.com" target="_blank">Craving Greens</a>
+			<paper-tooltip for="skinWatermark" position="top" fit-to-visible-bounds='true'>Author of image</paper-tooltip>
+			<paper-toolbar id="mainToolbar">
+				<paper-icon-button id="menu" icon="menu" tabindex="0" style="outline:none"></paper-icon-button>
+			    <span id="topLeft" class="flex">
+			    	<div id="calendarTitle"></div><iron-icon id="calendarTitleDropdown" icon="arrow-drop-down"></iron-icon>
+			    	<paper-tooltip id="calendarTitleToolTip" class="delay" for="calendarTitle" msg="goToToday"></paper-tooltip>
+					<paper-icon-button id="prev" msgTitle="previous" icon="chevron-left"></paper-icon-button>
+			      	<paper-icon-button id="next" msgTitle="next" icon="chevron-right"></paper-icon-button>
+			    </span>
+			   	<div id="quickAddWrapper" class="layout horizontal center">
+			   		<paper-icon-button id="quickAddGoBack" icon="event"></paper-icon-button>
+			   		<input type="input" id="quickAdd" class="flex" autocomplete="off">
+			   		<div id="quickAddOptions" class="layout horizontal center">
+			   			<!-- patch because auto-bind did not work when loading polymer after the dom (because I use a 1 millisecond timeout before loading polymer to load the popup faster) -->
+			   			<template id="quickAddCalendarsTemplate">
+				  	        <paper-dropdown-menu id="quickAddCalendars" no-label-float="true">
+						        <paper-menu id="quickAddCalendarsMenu" class="dropdown-content" selected="0"></paper-menu>
+							</paper-dropdown-menu>
+						</template>
+						<paper-button id="save" raised class="colored" msg="save"></paper-button>
+					</div>
+				</div>
+				<div id="searchInputWrapper" class="layout horizontal center">
+					<paper-icon-button id="back" icon="arrow-back"></paper-icon-button>
+					<input id="searchInput" type="text" class="flex" autocomplete="off"/>
+			   		<div id="searchOptions" class="layout horizontal center">
+			   			<!-- patch because auto-bind did not work when loading polymer after the dom (because I use a 1 millisecond timeout before loading polymer to load the popup faster) -->
+			   			<template id="searchCalendarsTemplate">
+				  	        <paper-dropdown-menu id="searchCalendars" no-label-float="true">
+						        <paper-menu id="searchCalendarsMenu" class="dropdown-content" selected="0"></paper-menu>
+							</paper-dropdown-menu>
+						</template>
+						<paper-button id="search" raised class="colored" style="padding:5px"><iron-icon icon="search"></iron-icon></paper-button>
+					</div>
+				</div>
+				<div id="topRight">
+					<paper-icon-button id="newsNotification" icon="av:new-releases" hidden></paper-icon-button>
+					<paper-tooltip for="newsNotification">
+					    <div id="newsNotificationGmailAdMessage" class="hide">Try my other Checker Plus for Gmail <img style="vertical-align:middle;margin-top:2px" src="images/checkerPlusForGmail.png" height=24/></div>
+					    <div id="newsNotificationReducedDonationMessage" class="hide" style="text-align:center"><span msg="reducedDonationAd_popup">Good news long time user!<br>You can get the latest <span msg="extraFeatures" style="text-transform:lowercase">extra features</span> for only 50&cent;</span></div>
+					    <!--div style="margin-top:4px;font-size:0.8em;color:#aaa;text-align:center">Clicking will also hide this message</div-->
+					</paper-tooltip>
+					<paper-icon-button id="pendingNotifications" icon="social:notifications"></paper-icon-button>
+					<paper-tooltip for="pendingNotifications" msg="pendingNotifications"></paper-tooltip>
+					<paper-icon-button id="goToToday" icon="today" msgTitle="goToToday"></paper-icon-button>
+					<paper-icon-button id="showSearch" icon="search" msgTitle="search"></paper-icon-button>
+					<paper-icon-button class="placeholder share-button" icon="social:share"></paper-icon-button>
+			    	<paper-menu-button horizontal-align="right">
+				  	    <paper-icon-button class="dropdown-trigger share-button" icon="social:share" msgTitle="share"></paper-icon-button>
+					    <paper-menu id="share-menu" class="dropdown-content">
+				            <paper-item id="googleplus"><social-media-icons size=20 icon="googleplus"></social-media-icons></paper-item>
+				            <paper-item id="facebook"><social-media-icons size=20 icon="facebook"></social-media-icons></paper-item>
+				            <paper-item id="twitter"><social-media-icons size=20 icon="twitter"></social-media-icons></paper-item>
+				            <paper-item id="pinterest"><social-media-icons size=20 icon="pinterest"></social-media-icons></paper-item>
+				            <paper-item id="linkedin"><social-media-icons size=20 icon="linkedin"></social-media-icons></paper-item>
+				            <paper-item id="tumblr"><social-media-icons size=20 icon="tumblr"></social-media-icons></paper-item>
+					    </paper-menu>
+					</paper-menu-button>
+			  	    <paper-icon-button id="refresh" msgTitle="refresh" icon="refresh"></paper-icon-button>
+					<paper-icon-button id="maximize" msgTitle="openCalendar" icon="open-in-browser"></paper-icon-button>
+					<paper-icon-button class="placeholder" icon="more-vert"></paper-icon-button>
+			    	<paper-menu-button horizontal-align="right">
+						<paper-icon-button id="mainOptions" class="dropdown-trigger" icon="more-vert" msgTitle="options"></paper-icon-button>
+					    <paper-menu id="options-menu" class="dropdown-content">
+					    	<paper-icon-item class="options">
+								<iron-icon icon="settings" item-icon></iron-icon>
+								<span msg="options"></span>
+							</paper-icon-item>
+
+							<paper-item class="separator" disabled></paper-item>
+
+					    	<paper-icon-item id="viewAgenda">
+								<iron-icon icon="view-agenda" item-icon></iron-icon>
+								<span msg="agenda"></span>
+							</paper-icon-item>
+					    	<paper-icon-item id="viewDay">
+								<iron-icon icon="view-day" item-icon></iron-icon>
+								<span msg="day"></span>
+							</paper-icon-item>
+					    	<paper-icon-item id="viewWeek">
+								<iron-icon icon="view-week" item-icon></iron-icon>
+								<span msg="week"></span>
+							</paper-icon-item>
+					    	<paper-icon-item id="viewMonth">
+								<iron-icon icon="view-module" item-icon></iron-icon>
+								<span msg="month"></span>
+							</paper-icon-item>
+					    	<paper-icon-item id="view4Weeks">
+								<iron-icon icon="view-module" item-icon></iron-icon>
+								<span id="viewXWeeksLabel"></span>
+							</paper-icon-item>
+							
+				            <paper-item class="separator" disabled></paper-item>
+				            
+							<paper-icon-item class="openSnoozedEvents">
+								<iron-icon icon="av:snooze" item-icon></iron-icon>
+								<span msg="snoozedEvents"></span>
+							</paper-icon-item>
+
+				            <paper-item class="separator" disabled></paper-item>
+
+					    	<paper-icon-item class="skins">
+								<iron-icon icon="editor:format-paint" item-icon></iron-icon>
+								<span msg="skins"></span>...
+							</paper-icon-item>
+					    	<paper-icon-item class="popout">
+								<iron-icon icon="open-in-new" item-icon></iron-icon>
+								<span msg="popout"></span>
+							</paper-icon-item>
+				            
+				            <paper-item class="separator" disabled></paper-item>
+				            
+				            <paper-item class="contribute"><span msg="contribute">contribute</span></paper-item>
+				            <paper-item class="discoverMyApps"><span msg="discoverMyApps">discoverMyApps</span></paper-item>
+				            <paper-item class="aboutMe"><span msg="aboutMe">about me</span></paper-item>
+				            <paper-item class="help"><span msg="help">help</span></paper-item>
+					    </paper-menu>
+					</paper-menu-button>
+				    <paper-icon-button class="close" msgTitle="closeEsc" icon="close"></paper-icon-button>
+				</div>
+				<div class="middle" style="margin-top:154px;width:100%">
+	 				<div id="datepickerWrapper"><div id="datepicker"></div></div>
+				</div>
+		    </paper-toolbar>
+		    <div id="mainContent">
+		       	<div id="betaCalendarWrapper">
+					<div id='betaCalendar'></div>
+	    		</div>
+   				<div id='agenda'>
+					<div id="agendaEvents"></div>
+				</div>
+		    </div>
+		</paper-header-panel>
+	</paper-drawer-panel>
+  
+  	<div id="bigAddEventButtonWrapper">
+  		<paper-fab id="bigAddEventButton" icon="add"></paper-fab>
+  	</div>
+  	<paper-tooltip chrome-only for="bigAddEventButton" position="left"><span msg="justStartTyping">abc</span></paper-tooltip>
+
+	<dom-module id="event-reminders">
+		<template id="node">
+  			<template is="dom-repeat" items="{{reminders}}" as="reminder">
+  				<div class="layout horizontal center calendarReminder" method$={{reminder.method}}>
+					<iron-icon icon="social:notifications" class="fieldIcon"></iron-icon>
+					<paper-dropdown-menu no-label-float class="reminderMethodWrapper">
+				  		<paper-menu class="dropdown-content reminderMethod" attr-for-selected="value" selected="{{reminder.method}}">
+				    		<paper-item value="email" msg="email">Email</paper-item>
+				    		<paper-item value="popup" msg="notification">nnNotification</paper-item>
+				    	</paper-menu>
+				    </paper-dropdown-menu>
+				    <paper-input class="reminderMinutes" value="{{reminder.minutes}}" hidden></paper-input>
+				    <paper-input class="reminderValuePerPeriod" no-label-float></paper-input>
+					<paper-dropdown-menu no-label-float>
+				  		<paper-menu class="dropdown-content reminderPeriod" attr-for-selected="value">
+				    		<paper-item value="minutes" msg="minutes">minutes</paper-item>
+				    		<paper-item value="hours" msg="hours">hours</paper-item>
+				    		<paper-item value="days" msg="days">dddays</paper-item>
+				    		<paper-item value="weeks" msg="weeks">weeks</paper-item>
+				    	</paper-menu>
+				    </paper-dropdown-menu>
+				    <paper-icon-button class="deleteReminder" icon="delete"></paper-icon-button>
+  				</div>
+  			</template>
+		    <paper-icon-button id="addReminder" icon="add"></paper-icon-button>
+		    <paper-tooltip for="addReminder"><span msg="addNotification"></span></paper-tooltip>
+  		</template>
+	</dom-module>
+
+	<template id="permissionDialogTemplate">
+		<paper-dialog id="permissionDialog" modal="true">
+			<div msg="permissionIsRequired">Permission is required</div>
+			<div class="buttons">
+		  		<paper-button class="cancelDialog"><span msg="moreInfo">More info</span></paper-button>
+	  			<paper-button class="okDialog colored" raised><span msg="grantAccess">Grant access</span></paper-button>
+	  		</div>
+		</paper-dialog>
+	</template>
+
+	<template id="fbOverlayTemplate">
+		<paper-dialog id="fbOverlay">
+	  		<h2 id="fbEventTitle"></h2>
+	  		<paper-dialog-scrollable id="fbEventDate">test</paper-dialog-scrollable>
+	  		<div class="buttons">
+	  			<paper-button dialog-dismiss><span msg="cancel"></span></paper-button>
+	  			<paper-button dialog-confirm><span msg=addToGoogleCalendar></span></paper-button>
+	  		</div>
+		</paper-dialog>
+	</template>
+
+	<template id="fbPermissionOverlayTemplate">
+		<paper-dialog id="fbPermissionOverlay">
+			<h2 msg="allowThisExtensionToReadYourFacebookEvent">allowThisExtensionToReadYourFacebookEvent</h2>
+			<div class="buttons">
+	  			<paper-button dialog-other><span msg="moreInfo"></span></paper-button>
+	  			<paper-button dialog-dismiss><span msg="no"></span></paper-button>
+	  			<paper-button dialog-confirm autofocus><span msg="yes"></span></paper-button>
+	  		</div>
+		</paper-dialog>
+	</template>
+
+	<template id="popoutDialogTemplate">
+		<paper-dialog id="popoutDialog" with-backdrop="true" no-cancel-on-outside-click="true">
+			<div>For more popout options like creating shortcuts click more info.</div>
+			<div class="buttons">
+		  		<paper-button dialog-other><span msg="moreInfo"></span></paper-button>
+		  		<paper-button dialog-dismiss autofocus><span msg="ok"></span></paper-button>
+			</div>
+		</paper-dialog>
+	</template>
+	
+	<template id="createEventDialogTemplate">
+		<paper-dialog id="createEventDialog" modal="true">
+			<paper-dialog-scrollable class="dialogDescription">
+				<div id="createEventDate">Tue, Nov 17</div>
+				<paper-input id="eventTitle" msgLabel="what" msgPlaceholder="quickAddDefaultText"></paper-input>
+				<div id="eventStartEndTimeWrapper">
+					<div>
+						<input id="eventStartDate" type="text"/> <input id="eventStartTime" type="text"/> <iron-icon icon="chevron-right" style="color:gray"></iron-icon> <input id="eventEndDate" type="text"/> <input id="eventEndTime" type="text"/>
+					</div>
+					<paper-checkbox id="eventAllDay"><span msg="allDayText">allday</span></paper-checkbox>
+				</div>
+				<div class="layout horizontal center">
+					<iron-icon icon="maps:place" class="fieldIcon"></iron-icon>
+					<paper-input id="eventLocation" class="flex" msgLabel="where"></paper-input> <paper-icon-button id="currentPage" icon="icons:link" tabIndex=-1></paper-icon-button><paper-tooltip for="currentPage" style="white-space:nowrap"><span msg="useDetailsFromCurrentPage">Use details from current page</span></paper-tooltip>
+				</div>
+				<div class="layout horizontal center">
+					<iron-icon icon="editor:short-text" class="fieldIcon self-start"></iron-icon>
+					<paper-textarea id="eventDescription" class="flex" msgLabel="eventDescription" max-rows=2></paper-textarea>
+				</div>
+				<div class="layout horizontal center">
+					<iron-icon icon="event" class="fieldIcon"></iron-icon>
+		   			<template id="createEventCalendarsTemplate">
+			  	        <paper-dropdown-menu id="createEventCalendar">
+					        <paper-menu id="createEventCalendarsMenu" class="dropdown-content" attr-for-selected="value"></paper-menu>
+						</paper-dropdown-menu>
+					</template>
+					<div id="eventColor" style="position:relative;margin-top:15px;cursor:pointer;border-radius:1px;width:20px;height:20px"><paper-ripple center style="color:white"></paper-ripple></div>
+					<paper-tooltip for="eventColor" style="white-space:nowrap"><span msg="eventColor">eventcolor</span></paper-tooltip>
+				</div>
+		  		<event-reminders></event-reminders>
+		  	</paper-dialog-scrollable>
+			<div class="buttons" style="margin-top:18px">
+		  		<paper-button dialog-dismiss><span msg="cancel"></span></paper-button>
+		  		<paper-button dialog-other id="openEventInCalendar">
+		  			<iron-icon style="margin-top:-4px" icon="launch"></iron-icon>
+		  			<span msg="open"></span>
+		  		</paper-button>
+		  		<paper-tooltip for="openEventInCalendar"><span msg="openCalendar"></span></paper-tooltip>
+		  		<paper-button dialog-confirm class="colored" raised><span msg="save"></span></paper-button>
+			</div>
+		</paper-dialog>
+	</template>
+
+	<template id="clickedEventDialogTemplate">
+		<paper-dialog id="clickedEventDialog" xxexit-animation="fade-out-animation">
+			<div class="layout horizontal">
+				<div class="eventIcon"></div>
+				<div id="clickedEventTitle" class="flex">title</div>
+				<div id="clickedEventsTopRightButtons">
+					<paper-icon-button icon="open-in-new" id="clickedEventOpenInCalendar" msgTitle="openCalendar"></paper-icon-button>
+					<paper-icon-button icon="close" id="clickedEventClose" msgTitle="close"></paper-icon-button>
+				</div>
+			</div>
+			<paper-dialog-scrollable class="dialogDescription">
+				<div class="field layout horizontal center">
+					<iron-icon icon="schedule" class="fieldIcon"></iron-icon>
+					<div id="clickedEventDate">Tue, Nov 17</div>
+				</div>
+				<div id="clickedEventLocationWrapper" class="field layout horizontal center" hidden>
+					<iron-icon icon="maps:place" class="fieldIcon"></iron-icon>
+					<div class="clickedEventSubDetails flex"><a id="clickedEventLocationMapLink" target="_blank" href="#" msg="map">blah</a></div>
+				</div>
+				<div id="clickedEventSourceWrapper" class="field layout horizontal center" hidden>
+					<iron-icon icon="maps:place" class="fieldIcon"></iron-icon>
+					<div class="clickedEventSubDetails flex"><a id="clickedEventSourceLink" target="_blank" href="#">sourceTitle</a></div>
+				</div>
+				<div id="clickedEventCalendarWrapper" class="field layout horizontal center" hidden>
+					<iron-icon icon="event" class="fieldIcon"></iron-icon>
+					<div class="clickedEventSubDetails flex" msgTitle="calendar"><span id="clickedEventCalendar"></span></div>
+				</div>
+				<div id="clickedEventVideoWrapper" class="field layout horizontal center" hidden>
+					<span class="clickedEventSubDetailsLabel" msg="videoCall">videocall</span> <div class="clickedEventSubDetails flex"><img style="vertical-align: bottom" src="images/Google+.png"/> <a id="clickedEventVideoLink" target="_blank" href="#">Join Google+ hangout</a></div>
+				</div>
+				<div id="clickedEventAttendeesWrapper" class="field layout horizontal center" hidden>
+					<iron-icon icon="social:group" class="fieldIcon"></iron-icon>
+					<div class="clickedEventSubDetails flex"></div>
+				</div>
+				<div id="clickedEventGoingWrapper" class="field layout horizontal center" hidden>
+					<span class="clickedEventSubDetailsLabel" msg="going">going</span> <div class="clickedEventSubDetails flex"><a id="goingYes" msg="yes" href="#" responseStatus="accepted">Yes</a> - <a id="goingMaybe" msg="maybe" href="#" responseStatus="tentative">Maybe</a> - <a id="goingNo" msg="no" href="#" responseStatus="declined">No</a></div>
+				</div>				
+				<div id="clickedEventDescriptionWrapper" class="field layout horizontal center" hidden>
+					<iron-icon icon="editor:short-text" class="fieldIcon self-start"></iron-icon>
+					<textarea class="clickedEventSubDetails flex" readonly style="resize:none;border:none;outline:none;height:47px"></textarea>
+				</div>
+				<div id="clickedEventCreatedByWrapper" class="field layout horizontal center" hidden>
+					<span class="clickedEventSubDetailsLabel" msg="createdBy">created by</span> <div class="clickedEventSubDetails flex"><span id="clickedEventCreatedBy"></span></div>
+				</div>
+		  	</paper-dialog-scrollable>
+			<div class="buttons" style="margin-top:15px;padding-left:10px;border-top:1px solid #E8E8E8">
+				<paper-icon-button icon="image:color-lens" id="clickedEventColor" msgTitle="eventColor"></paper-icon-button>
+				<paper-icon-button icon="image:edit" id="clickedEventEdit" msgTitle="editEventDetails"></paper-icon-button>
+				<paper-icon-button icon="delete" id="clickedEventDelete" msgTitle="delete"></paper-icon-button>
+			</div>
+		</paper-dialog>
+	</template>
+
+	<template id="skinsDialogTemplate">
+		<paper-dialog id="skinsDialog" no-cancel-on-outside-click="true">
+			<paper-dialog-scrollable>
+				<div class="layout horizontal">
+					<div class="layout vertical">
+						<div msg="available">Available</div>
+						<select id="availableSkins" multiple></select>
+					</div>
+					<div class="layout vertical center" style="margin:auto 10px">
+						<div class="layout vertical center">
+							<paper-icon-button id="swapSkin" icon="swap-horiz" style="border-radius:50%;background:#eee"></paper-icon-button>
+							<paper-tooltip id="swapSkinToolTip" for="swapSkin" animation-delay="0">CANT BE EMPTY</paper-tooltip>
+						</div>
+					</div>
+					<div class="layout vertical">
+						<div msg="added">Added</div>
+						<select id="addedSkins" multiple></select>
+					</div>
+				</div>
+				<div id="skinAuthorWrapper" style="font-style:italic;margin:2px 0 0 2px;color:gray"><a id="skinCSS" msg="skin">Skin</a> <span msg="by">by</span> <a id="skinAuthor" target="_blank"></a></div>
+			</paper-dialog-scrollable>
+			<div class="buttons">
+				<paper-button dialog-dismiss class="disableSkins"><span msg="disableAll">dismiss all</span></paper-button>
+				<paper-button dialog-dismiss class="enableSkins"><span msg="enable">Enable</span></paper-button>
+				<paper-button class="updateSkins"><span msg="update">Update</span></paper-button>
+				<paper-button class="customSkin"><span msg="custom">custom</span></paper-button>
+		  		<paper-button autofocus class="okDialog"><span msg="done">done</span></paper-button>
+		  	</div>
+		</paper-dialog>
+	</template>
+
+	<template id="customSkinDialogTemplate">
+		<paper-dialog id="customSkinDialog" no-cancel-on-outside-click="true">
+			<paper-dialog-scrollable>
+				<div class="layout vertical">
+					<div class="layout horizontal center">
+						<div class="flex" style="color:gray;margin-bottom:2px">Enter <a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets" target="_blank">CSS</a> below</div>
+					</div>
+					<textarea style="margin-bottom:10px;width:400px;height:50px"></textarea>
+					<paper-input id="customBackgroundImageUrl" label="Tip: Use imgur.com if you need to host it" placeholder="Background image url" style="width:100%"></paper-input>
+				</div>
+			</paper-dialog-scrollable>
+			<div class="buttons">
+				<paper-button class="shareSkin">Suggest it to Jason</paper-button>
+				<paper-button class="updateSkin"><span msg="testIt">test</span></paper-button>
+		  		<paper-button dialog-confirm autofocus class="okDialog"><span msg="done">done</span></paper-button>
+		  	</div>
+		</paper-dialog>
+	</template>
+		
+	<template id="genericDialogTemplate">
+		<paper-dialog id="genericDialog" modal="true">
+			<h2>blah blah</h2>
+			<paper-dialog-scrollable class="dialogDescription">
+				blah
+			</paper-dialog-scrollable>
+			<div class="buttons">
+		  		<paper-button dialog-other class="otherDialog" hidden>empty</paper-button>
+		  		<paper-button dialog-dismiss class="cancelDialog"><span msg="cancel"></span></paper-button>
+		  		<paper-button dialog-confirm autofocus class="okDialog"><span msg="ok"></span></paper-button>
+		  	</div>
+		</paper-dialog>
+	</template>
+	
+	<template id="eventColorsDialogTemplate">
+		<paper-dialog id="eventColorsDialog">
+			<h2>blah blah</h2>
+			<div class="dialogDescription">
+			
+		  	</div>
+			<div class="buttons" style="margin-top:18px">
+		  		<paper-button dialog-confirm><span msg="ok"></span></paper-button>
+			</div>
+		</paper-dialog>
+	</template>
+		
+	<paper-toast id="processing" msgText="loading"><paper-spinner dir="ltr" active></paper-spinner></paper-toast>
+	<paper-toast id="message"><paper-icon-button class="closeToast" icon="close"></paper-icon-button></paper-toast>
+	<paper-toast id="error"><paper-button class="toastLink"></paper-button> <paper-icon-button class="closeToast" icon="close"></paper-icon-button></paper-toast>
+	<paper-toast id="eventToast"><paper-button class="toastLink toastUndoEvent"><span msg="undo">Undo</span></paper-button> <paper-button class="toastLink toastEditEvent"><span msg="edit">Edit</span></paper-button> <paper-icon-button class="closeToast" icon="close"></paper-icon-button></paper-toast>
+	
+</body>
+</html>

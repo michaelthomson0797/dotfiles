@@ -1,0 +1,18 @@
+2016/10/26-20:41:31.828 12311 Reusing MANIFEST /home/thomsm1/.config/chromium/Default/Local Extension Settings/gighmmpiobklfepjocnamgkkbiglidom/MANIFEST-000001
+2016/10/26-20:41:31.828 12311 Recovering log #29
+2016/10/26-20:41:31.828 12311 Reusing old log /home/thomsm1/.config/chromium/Default/Local Extension Settings/gighmmpiobklfepjocnamgkkbiglidom/000029.log 
+2016/10/26-20:42:33.335 12519 Level-0 table #33: started
+2016/10/26-20:42:33.454 12519 Level-0 table #33: 2026199 bytes OK
+2016/10/26-20:42:33.500 12519 Delete type=0 #29
+2016/10/26-20:42:33.501 12519 Compacting 4@0 + 1@1 files
+2016/10/26-20:42:33.677 12519 Generated table #34@0: 8 keys, 2025765 bytes
+2016/10/26-20:42:33.677 12519 Compacted 4@0 + 1@1 files => 2025765 bytes
+2016/10/26-20:42:33.724 12519 compacted to: files[ 0 1 0 0 0 0 0 ]
+2016/10/26-20:42:33.724 12519 Delete type=2 #30
+2016/10/26-20:42:33.724 12519 Delete type=2 #28
+2016/10/26-20:42:33.724 12519 Delete type=2 #33
+2016/10/26-20:42:33.725 12519 Delete type=2 #25
+2016/10/26-20:42:33.725 12519 Delete type=2 #23
+2016/10/26-20:42:40.563 12519 Level-0 table #36: started
+2016/10/26-20:42:40.666 12519 Level-0 table #36: 2025230 bytes OK
+2016/10/26-20:42:40.696 12519 Delete type=0 #32

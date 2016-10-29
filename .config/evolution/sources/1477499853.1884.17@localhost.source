@@ -1,0 +1,34 @@
+[Data Source]
+DisplayName=thomsm1@mcmaster.ca
+Enabled=true
+Parent=1477499853.1884.26@localhost
+
+[Pop Backend]
+FilterInbox=true
+DeleteAfterDays=0
+DeleteExpunged=false
+DisableExtensions=false
+KeepOnServer=false
+AutoFetch=true
+
+[Authentication]
+Host=pop.gmail.com
+Method=Google
+Port=110
+ProxyUid=system-proxy
+RememberPassword=true
+User=thomsm1
+CredentialName=
+
+[Mail Account]
+BackendName=pop
+IdentityUid=1477499853.1884.14@localhost
+ArchiveFolder=
+NeedsInitialSetup=false
+
+[Security]
+Method=none
+
+[Refresh]
+Enabled=true
+IntervalMinutes=60

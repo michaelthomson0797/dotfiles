@@ -1,0 +1,104 @@
+{
+   "LAST_ITEM_DO_NOT_REMOVE": {
+      "message": "DO NOT REMOVE"
+   },
+   "agenda": {
+      "message": "Naptár"
+   },
+   "agendaOnly": {
+      "message": "Napirend csak"
+   },
+   "alertMe": {
+      "message": "vagy a riasztási nekem ..."
+   },
+   "calendarViewTitle": {
+      "message": "Válassza ki az alapértelmezett naptár nézet"
+   },
+   "changeView": {
+      "message": "Nézet módosítása"
+   },
+   "customized": {
+      "message": "Testreszabott"
+   },
+   "d": {
+      "message": "n"
+   },
+   "daysAgo": {
+      "message": "napja"
+   },
+   "daysLeft": {
+      "message": "$1 nap van hátra"
+   },
+   "description": {
+      "message": "Gyors betekintést ad az összes Google Naptárod eseményeibe, amelyekről asztali emlékeztetőt is kérhetsz 'szundi'-funkcióval"
+   },
+   "h": {
+      "message": "ó"
+   },
+   "helpSupport": {
+      "message": "a segítségkérés a szerző e meghosszabbítás!"
+   },
+   "hoursAgo": {
+      "message": "$1 órája"
+   },
+   "hoursLeft": {
+      "message": "$1 óra van hátra"
+   },
+   "inVARhour": {
+      "message": "$1 óra alatt"
+   },
+   "inVARhours": {
+      "message": "$1 óra"
+   },
+   "inVARminutes": {
+      "message": "$1 perc"
+   },
+   "m": {
+      "message": "p"
+   },
+   "min": {
+      "message": "perc"
+   },
+   "minutesAgo": {
+      "message": "$1 perce"
+   },
+   "minutesLeft": {
+      "message": "$1 perc van hátra"
+   },
+   "month": {
+      "message": "Hónap"
+   },
+   "openCalendar": {
+      "message": "Naptár megnyitásához"
+   },
+   "quickAdd": {
+      "message": "Gyors hozzáadása"
+   },
+   "quickAddDefaultText": {
+      "message": "e.g., 7pm vacsora Bob"
+   },
+   "refresh": {
+      "message": "Frissítés"
+   },
+   "save": {
+      "message": "Mentés"
+   },
+   "showAgendaOptions": {
+      "message": "Megjelenítés beállítások link napirendre tekintettel"
+   },
+   "today": {
+      "message": "Ma"
+   },
+   "tomorrow": {
+      "message": "Holnap"
+   },
+   "view": {
+      "message": "Nézd meg"
+   },
+   "week": {
+      "message": "Hét"
+   },
+   "yesterday": {
+      "message": "tegnap"
+   }
+}

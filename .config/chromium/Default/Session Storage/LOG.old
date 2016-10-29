@@ -1,0 +1,12 @@
+2016/10/26-20:41:31.998 12309 Reusing MANIFEST /home/thomsm1/.config/chromium/Default/Session Storage/MANIFEST-000001
+2016/10/26-20:41:31.998 12309 Recovering log #110
+2016/10/26-20:41:31.998 12309 Reusing old log /home/thomsm1/.config/chromium/Default/Session Storage/000110.log 
+2016/10/26-20:41:43.808 12519 Level-0 table #115: started
+2016/10/26-20:41:43.819 12519 Level-0 table #115: 31967 bytes OK
+2016/10/26-20:41:43.836 12519 Delete type=0 #110
+2016/10/26-20:42:35.328 12519 Level-0 table #117: started
+2016/10/26-20:42:35.342 12519 Level-0 table #117: 179149 bytes OK
+2016/10/26-20:42:35.353 12519 Delete type=0 #114
+2016/10/26-20:44:22.137 12519 Level-0 table #119: started
+2016/10/26-20:44:22.187 12519 Level-0 table #119: 184337 bytes OK
+2016/10/26-20:44:22.209 12519 Delete type=0 #116

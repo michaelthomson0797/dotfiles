@@ -1,0 +1,20 @@
+[Data Source]
+DisplayName=thomsm1@mcmaster.ca
+Enabled=true
+Parent=
+
+[Authentication]
+Host=
+Method=Google
+Port=0
+ProxyUid=system-proxy
+RememberPassword=true
+User=thomsm1
+CredentialName=
+
+[Collection]
+BackendName=google
+CalendarEnabled=true
+ContactsEnabled=true
+Identity=thomsm1
+MailEnabled=true

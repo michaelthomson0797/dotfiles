@@ -1,0 +1,19 @@
+[Data Source]
+DisplayName=michaelthomson0797@gmail.com
+Enabled=true
+Parent=1477499245.774.0@localhost
+
+[Mail Transport]
+BackendName=smtp
+
+[Authentication]
+Host=smtp.gmail.com
+Method=XOAUTH2
+Port=587
+ProxyUid=system-proxy
+RememberPassword=true
+User=michaelthomson0797@gmail.com
+CredentialName=
+
+[Security]
+Method=starttls-on-standard-port

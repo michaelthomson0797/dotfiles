@@ -11,25 +11,16 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'kien/ctrlp.vim'
-Plugin 'sjl/gundo.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
-Plugin 'valloric/youcompleteme'
-Plugin 'xolox/vim-notes'
-Plugin 'xolox/vim-misc'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-surround'
-
-" Markdown
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'vim-pandoc/vim-pandoc'
 
 " tmux
 Plugin 'christoomey/vim-tmux-navigator'
 
-"YCM extra config
-Plugin 'rdnetto/YCM-Generator'
+" colorschemes
+Plugin 'chriskempson/base16-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -39,7 +30,9 @@ filetype plugin indent on    " required
 
 " Colors {{{
 
-colorscheme gruvbox " solarized colorscheme
+let base16colorspace=256
+set t_Co=256
+colorscheme base16-oceanicnext " solarized colorscheme
 set background=dark
 
 syntax enable		" enable syntax processing
@@ -117,19 +110,11 @@ let mapleader=","	" leader is a comma
 " jk is escape
 inoremap jk <esc>
 
-" toggle gundo
-nnoremap <leader>u :GundoToggle<CR>
-
 "edit vimrc/zshrc and lead vimrc bindings
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
-" super save session
-nnoremap <leader>s :mksession<CR>
-
-" convert current file to pdf
-nnoremap <leader>c :!pandoc % -s -o %.pdf<CR>
 
 " }}}
 
@@ -145,12 +130,6 @@ let g:ctrlp_working_path_mode = 0
 
 " leader + f to toggle nerdtree
 nnoremap <Leader>f :NERDTreeToggle<Enter>
-" }}}
-
-" Vim-notes {{{
-
-let g:notes_directories = ['~/Notes']
-
 " }}}
 
 " EasyMotion {{{

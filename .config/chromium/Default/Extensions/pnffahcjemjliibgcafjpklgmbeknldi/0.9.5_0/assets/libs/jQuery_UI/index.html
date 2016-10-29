@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Example Page</title>
+	<link href="css/ui-lightness/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+	<script src="js/jquery-1.9.0.js"></script>
+	<script src="js/jquery-ui-1.10.0.custom.js"></script>
+	<script>
+	$(function() {
+
+		$( "#progressbar" ).progressbar({
+			value: 20
+		});
+
+	});
+	</script>
+	<style>
+	body{
+		font: 62.5% "Trebuchet MS", sans-serif;
+		margin: 50px;
+		background-color: #42545b;
+	}
+	#progressbar{
+		width: 440px;
+	}
+
+	</style>
+</head>
+<body>
+
+
+<div id="progressbar"></div>
+
+</body>
+</html>

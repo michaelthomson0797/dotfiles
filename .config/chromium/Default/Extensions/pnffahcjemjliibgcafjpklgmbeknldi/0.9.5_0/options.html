@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Options</title>.
+	<link rel="stylesheet" href="assets/css/options.css">
+</head>
+<body>
+	<div id="darkenBackground"></div>
+	<div id="sexySaveMessage">Saving...</div>
+	<h1 id="title"></h1>
+	<div id="content" class="cf">
+		<h2>Tips</h2>
+		<p><span class="tip">#1</span>Press spacebar to Pause/Unpause.</p>
+		<p><span class="tip">#2</span>Press backspace to go back to start.</p>
+		<p><span class="tip">#3</span>You can use Read fast without selecting text. Just click the R button and it will read the whole page (especially useful if you use a service like Pocket that only displays the actual article).</p>
+		<p><span class="tip">#4</span>Did you know that Chrome allows you to create keyboard shortcuts for your extensions? Go to chrome://extensions/ and click on "Keyboard shortcuts" at the bottom of the page.</p>
+		<br>
+		<h2>Options</h2>
+		<form id='options' onSumbit="return optionsValidation()">
+			<span class="option">Delay before reading starts</span>
+			<input type="radio" name="delay" value="0" id="r1"><label for="r1" />0 ms</label>
+			<input type="radio" name="delay" value="500" id="r2"><label for="r2" />500 ms</label>
+			<input type="radio" name="delay" value="1000" id="r3"><label for="r3" />1000 ms</label>
+			<input type="radio" name="delay" value="2000" id="r4"><label for="r4" />2000 ms</label>
+			<br>
+			<!-- <br>
+			<span>Position of the window:</span>
+			<input type="radio" name="position" value="top" id="r5"><label for="r5" />Top-right</label>
+			<input type="radio" name="position" value="center" id="r6"><label for="r6" />Centered</label>-->
+
+			<br>
+		</form>
+		<div id="SAVE">SAVE</div>
+
+	</div>
+	<script src="assets/libs/jQuery_UI/js/jquery-1.9.0.min.js"></script>
+	<script src="assets/scripts/options.js"></script>
+</body>
+</html>

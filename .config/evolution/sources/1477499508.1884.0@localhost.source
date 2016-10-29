@@ -1,0 +1,24 @@
+[Data Source]
+DisplayName=michaelthomson0797@gmail.com
+Enabled=false
+Parent=1477499508.1884.12@localhost
+
+[Mail Composition]
+Bcc=
+Cc=
+DraftsFolder=folder://local/Drafts
+ReplyStyle=default
+SignImip=true
+TemplatesFolder=folder://local/Templates
+
+[Mail Identity]
+Address=michaelthomson0797@gmail.com
+Name=Michael Thomson
+Organization=
+ReplyTo=
+SignatureUid=none
+
+[Mail Submission]
+SentFolder=folder://local/Sent
+TransportUid=1477499508.1884.10@localhost
+RepliesToOriginFolder=false

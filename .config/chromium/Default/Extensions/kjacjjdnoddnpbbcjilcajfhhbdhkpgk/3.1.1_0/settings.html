@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Forest Settings</title>
+    <link href="stylesheets/common.css" media="screen" rel="stylesheet" />
+    <link href="stylesheets/settings.css" media="screen" rel="stylesheet" />
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="main-view">
+            <br />
+            <br />
+            <div id="title-container"><img id="forest-icon" src="icons/icon-512.png" alt="" />&nbsp;<span id="settings_title" data-l10n-id="settings_title"></span></div>
+            <br />
+            <br />
+
+            <div class="forcedMode-container">
+                <h2><span id="forcedMode-title" data-l10n-id="settings_forcedMode_title">Forced Mode</span></h2>
+                <div class="section">
+                    <label>
+                        <input type="checkbox" id="forcedMode-enabled" data-l10n-id="settings_forceMode_enabled" /> Enable Forced Mode
+                    </label>
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <h2><span id="settings_blacklist_title" data-l10n-id="settings_blacklist_title">Blacklist</span>&nbsp;&nbsp;<img src="images/settings/addBlacklist.png" id="add-blacklist" class="buttons" alt="+" /></h2>
+            <div class="section">
+                <ul id="blacklist">
+                    <li id="new-black" class="new-black-box-hidden">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input id="new-black-box" class="domain" type="text" maxlength="50" value="" />
+                    </li>
+                    <li>
+                        <img src="" class="x buttons" alt="X" />&nbsp;&nbsp;<img src="favicon.ico" class="favicon" />&nbsp;&nbsp;<span>facebook.com</span>
+                    </li>
+                </ul>
+            </div>
+            <br />
+            <br />
+
+            <h2 id="settings_connect_title" data-l10n-id="settings_connect_title">"Connect Forest Account</h2>
+            <div class="section">
+                <div id="greetingsAnonymous">
+                    <div><a href="#" id="login-link" data-l10n-id="settings_login_portal">Log in</a>&nbsp;<span id="settings_login_description" data-l10n-id="settings_login_description"> to sync and view your forest on your phone.</span></div>
+                    <div class="minor_text"><span id="settings_no_account1" data-l10n-id="settings_no_account1">Don't have an account yet? Please sign up in our </span>&nbsp;
+                        <a id="settings_no_account_iosapp" href="https://itunes.apple.com/tw/app/forest-stay-focused-stop-phubbing/id866450515?mt=8" target="_blank" data-l10n-id="settings_no_account_iosapp">iOS</a>&nbsp;<span id="settings_no_account_or"
+                            data-l10n-id="settings_no_account_or"></span>&nbsp;
+                        <a id="settings_no_account_androidapp" href="https://play.google.com/store/apps/details?id=cc.forestapp" target="_blank" data-l10n-id="settings_no_account_androidapp">Android </a>
+                        <span id="settings_no_account2" data-l10n-id="settings_no_account2">.</span>
+                    </div>
+                </div>
+                <div id="greetingsUser" class="disappear">
+                    <div>
+                        <span id="settings_pre_user" data-l10n-id="settings_pre_user"></span>
+                        <span id="user-displayname"></span>
+                        <span id="settings_post_user" data-l10n-id="settings_post_user"></span>
+                    </div>
+                    <div>
+                      <span id="settings_sync_tree_species_manually_pre" data-l10n-id="settings_sync_tree_species_manually_pre"></span>
+                      <a href="#" id="settings_sync_tree_species_manually" data-l10n-id="settings_sync_tree_species_manually"></a>
+                      <span id="settings_syncing_tree_species_manually" data-l10n-id="settings_syncing_tree_species_manually" class="disappear"></span>
+                      <span id="settings_sync_tree_species_manually_post" data-l10n-id="settings_sync_tree_species_manually_post"></span>
+                    </div>
+                    <div>
+                        <span id="settings_pre_logout" data-l10n-id="settings_pre_logout"></span>
+                        <a id="logout-link" href="#" data-l10n-id="settings_logout"></a>
+                        <span id="settings_post_logout" data-l10n-id="settings_post_logout"></span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <h2 id="settings_other_apps_title" data-l10n-id="settings_other_apps_title">More ways to use Forest</h2>
+            <div class="section">
+                <div id="settings_other_apps_description" data-l10n-id="settings_other_apps_description">Grab Forest app and view your history forest, statistics and more!</div>
+                <br />
+                <div id="big-forest-image"></div>
+                <ul id="os">
+                    <li id="iphone" class="os buttons">
+                        <div id="settings_os_iphone" data-l10n-id="settings_os_iphone" class="os"></div>
+                    </li>
+                    <li id="android" class="os buttons">
+                        <div id="settings_os_android" data-l10n-id="settings_os_android" class="os"></div>
+                    </li>
+                    <li id="windows" class="os buttons">
+                        <div id="settings_os_windows" data-l10n-id="settings_os_windows" class="os"></div>
+                    </li>
+                </ul>
+            </div>
+            <br />
+            <br />
+            <div id="login-mask" class="disappear"></div>
+            <div id="login-popup" class="disappear login-popup-shrink">
+                <p id="login-title" data-l10n-id="settings_login_title"></p>
+                <br />
+                <form id="login-form">
+                    <input id="login-email-input" name="email" type="text" />
+                    <br />
+                    <br />
+                    <input id="login-password-input" name="password" type="password" />
+                    <br />
+                    <br />
+                </form>
+                <div id="login-message"></div>
+                <div id="login-loading" class="disappear"><img src="images/settings/loading.gif" alt="" /></div>
+                <div id="login-cancel" class="buttons" data-l10n-id="settings_login_cancel"></div>
+                <div id="login-btn" class="buttons" data-l10n-id="settings_login_btn"></div>
+            </div>
+            <div id="footer"></div>
+        </div>
+    </div>
+</body>
+
+</html>

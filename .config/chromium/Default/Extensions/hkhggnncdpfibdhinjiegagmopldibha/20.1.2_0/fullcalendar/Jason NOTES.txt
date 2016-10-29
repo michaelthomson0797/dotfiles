@@ -1,0 +1,4 @@
+we moved the following to the /js/
+lib/jquery
+lib/jquery-custom
+lib/moments 

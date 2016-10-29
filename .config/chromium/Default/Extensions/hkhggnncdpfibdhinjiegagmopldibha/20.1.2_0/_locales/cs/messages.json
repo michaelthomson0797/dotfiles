@@ -1,0 +1,701 @@
+{
+   "24hourMode": {
+      "message": "24hodinové zobrazení času"
+   },
+   "24hourModeTitle": {
+      "message": "Zobrazí čas v 24hodinovém formátu např. 18:00"
+   },
+   "LAST_ITEM_DO_NOT_REMOVE": {
+      "message": "NEODSTRAŇUJTE"
+   },
+   "Xminute": {
+      "message": "$1 minuta"
+   },
+   "Xminutes": {
+      "message": "$1 min"
+   },
+   "Xseconds": {
+      "message": "$1 s."
+   },
+   "aboutMe": {
+      "message": "O mě"
+   },
+   "account": {
+      "message": "Účet"
+   },
+   "addCalendar": {
+      "message": "Přidat Kalendář"
+   },
+   "addCalendarTitle": {
+      "message": "Přidat kalendáře pomocí soukromé URL"
+   },
+   "addToGoogleCalendar": {
+      "message": "Přidat do Google kalendáře"
+   },
+   "addedForSomeday": {
+      "message": "Přidáno $1 na $2"
+   },
+   "addedForSomedayAt": {
+      "message": "Přidáno $1 na $2 @ $3"
+   },
+   "addedForToday": {
+      "message": "Přidáno $1 na dnešek"
+   },
+   "addedForTodayAt": {
+      "message": "Přidáno $1 na $2"
+   },
+   "addedForTomorrow": {
+      "message": "Přidáno $1 na zítřek"
+   },
+   "addedForTomorrowAt": {
+      "message": "Přidáno $1 na zítřek @ $2"
+   },
+   "agenda": {
+      "message": "Agenda"
+   },
+   "agendaOnly": {
+      "message": "Pouze agenda"
+   },
+   "alertMe": {
+      "message": "nebo mne upozorněte ..."
+   },
+   "all": {
+      "message": "Všechny"
+   },
+   "alreadyDonated": {
+      "message": "Již přispěl?"
+   },
+   "amount": {
+      "message": "Částka"
+   },
+   "andMyExtensions": {
+      "message": "a moje rozšíření"
+   },
+   "backgroundOfNotification": {
+      "message": "Barva pozadí vyskakovací bubliny s oznámením"
+   },
+   "backgroundOfNotificationTooltip": {
+      "message": "Nastaví barvu pozadí oznámení popup bubliny"
+   },
+   "calendar": {
+      "message": "Kalendář"
+   },
+   "calendarHelper": {
+      "message": "kalendář pomocník"
+   },
+   "calendarViewAgenda": {
+      "message": "Zobrazení kalendáře: Agenda"
+   },
+   "calendarViewAgendaTitle": {
+      "message": "Při kliknutí na ikonu kalendáře se vám ukáže malý kalendář s událostmi vypsanými níže"
+   },
+   "calendarViewRegular": {
+      "message": "Zobrazení kalendáře: Pravidelné"
+   },
+   "calendarViewRegularTitle": {
+      "message": "Při kliknutí na ikonu kalendáře se vám ukáže kalendář s událostmi"
+   },
+   "calendarViewTitle": {
+      "message": "Vyberte si výchozí zobrazení kalendáře"
+   },
+   "changeView": {
+      "message": "Změnit zobrazení"
+   },
+   "changingIcon": {
+      "message": "Změna ikony"
+   },
+   "choosePaymentMethod": {
+      "message": "Vyberte si způsob placení"
+   },
+   "contact": {
+      "message": "kontakt"
+   },
+   "contactHelp": {
+      "message": "Kontakt - Pomoc"
+   },
+   "continue": {
+      "message": "Pokračovat"
+   },
+   "continueWithoutFeatures": {
+      "message": "Pokračovat v používání tohoto rozšíření, ale bez těchto dalších funkcí."
+   },
+   "contributeToContinue": {
+      "message": "Přispět"
+   },
+   "copyPrivateAddress": {
+      "message": "Zkopírujte adresu (XML) kalendáře do schránky."
+   },
+   "copyPrivateAddressTitle": {
+      "message": "Ve vašem stránku Google Kalendář na levé straně je kalendář seznam, klepněte na dolů-šipkou vedle kalendáře, dle Vašeho výběru, poté zvolte možnost Nastavení kalendáře. Vedle 'Soukromá adresa' vybrat XML a zkopírovat adresu do schránky. Poznámka: Pokud nemůžete najít 'Soukromá adresa', pak na doméně admin-úrovni, musíte změnit nastavení služeb-z kalendáře"
+   },
+   "createDeleteEvents": {
+      "message": "Vytvoření nebo odstranění akcí v měsíčním pohledu"
+   },
+   "createEvent": {
+      "message": "Vytvořit událost"
+   },
+   "creditCardOrPaypal": {
+      "message": "Můžete použít kreditní kartu nebo PayPal"
+   },
+   "currentPage": {
+      "message": "aktuální stránky"
+   },
+   "customizeCalendar": {
+      "message": "Změnit výšku, šířku, viditelné kalendáře, barvy, atd."
+   },
+   "customizeCalendarTitle": {
+      "message": "V popup kalendáři musíte změnit 'Pohled' na 'Vlastní'"
+   },
+   "customized": {
+      "message": "Vlastní"
+   },
+   "d": {
+      "message": "d"
+   },
+   "daysAgo": {
+      "message": "před dny"
+   },
+   "daysArray": {
+      "message": "neděle,pondělí,úterý,středa,čtvrtek,pátek,sobota"
+   },
+   "daysArrayShort": {
+      "message": "ne,po,út,st,čt,pá,so"
+   },
+   "daysLeft": {
+      "message": "zbývá $1 dnů"
+   },
+   "delete": {
+      "message": "Odstranit"
+   },
+   "description": {
+      "message": "Sledujte čas scházející do další schůzky, nechte se upozorňovat na události, přidejte události z 'vyskakovacího' okna"
+   },
+   "developingMore": {
+      "message": "a pracuji na několika vašich návrzích ..."
+   },
+   "dismiss": {
+      "message": "Ukončit"
+   },
+   "dismissAll": {
+      "message": "Zrušit všechno"
+   },
+   "doNotShowNotificationsForAlldayEvents": {
+      "message": "Nezobrazovat upozornění pro celodenní události"
+   },
+   "doNotShowNotificationsForAlldayEventsTitle": {
+      "message": "Nezobrazovat upozornění na celodenní akce"
+   },
+   "doNotShowNotificationsWhenBrowserClosed": {
+      "message": "Nezobrazovat upozornění, když jsou okna prohlížeče uzavřena"
+   },
+   "doNotShowNotificationsWhenBrowserClosedTooltip": {
+      "message": "Prohlížeč Chrome bude stále běžet na pozadí v tray ikoně, ALE oznámení se NEUKÁŽÍ!"
+   },
+   "doNotShowPastNotifications": {
+      "message": "Nezobrazovat upozornění na proběhlé události"
+   },
+   "doNotShowPastNotificationsTitle": {
+      "message": "Nezobrazovat oznámení, která nastala před otevření prohlížeče. Užitečné, když často přecházíte od jednoho počítače k druhému"
+   },
+   "email": {
+      "message": "E-mail:"
+   },
+   "enablePrivateAddressTitle": {
+      "message": "Přejděte na sekci Nastavení služby v ovládacích panelech, poté zvolte 'Sdílet veškeré informace, a ostatní mohou měnit volby kalendáře"
+   },
+   "enterATitle": {
+      "message": "Zadejte název!"
+   },
+   "enterAnAmount": {
+      "message": "Musíte zadat částku!"
+   },
+   "eventAdded": {
+      "message": "Událost byla přidána"
+   },
+   "eventCreated": {
+      "message": "Událost byla vytvořena"
+   },
+   "eventDeleted": {
+      "message": "Událost smazána"
+   },
+   "eventDescription": {
+      "message": "Popis"
+   },
+   "eventsAndSnoozes": {
+      "message": "Události a odložení"
+   },
+   "excludeCalendar": {
+      "message": "Vyloučit kalendář"
+   },
+   "excludeCalendarFrom": {
+      "message": "Vyloučit kalendář z"
+   },
+   "excludeCalendarFrom2": {
+      "message": "agendy a zobrazení kalendáře"
+   },
+   "excludeCalendarFrom3": {
+      "message": "Ikona tlačítka a oznámení"
+   },
+   "excludeCalendarFromTitle": {
+      "message": "Klikněte na 'zobrazit' skrýt konkrétní kalendáře z kalendáře / agenda názor nebo klikněte na 'kontrolu' vyloučit události od tlačítka ikonu a upozornění z kalendáře konkrétních"
+   },
+   "excludeCalendarsCheckboxChecking": {
+      "message": "Prosím, klikněte na odkaz vpravo v této možnosti"
+   },
+   "excludeRecurringEventsButtonIcon": {
+      "message": "Nezobrazovat opakující se události v ikoně"
+   },
+   "excludeRecurringEventsButtonIconTooltip": {
+      "message": "Všechny události nastavené na hodnotu opakovat nebudou zobrazeny v ikoně tlačítka, ale očekávejte upozornění"
+   },
+   "excluded": {
+      "message": "Vyloučené"
+   },
+   "extraFeatures": {
+      "message": "Další funkce"
+   },
+   "forSuggestions": {
+      "message": "pro návrhy nebo se více informací"
+   },
+   "googleAppsCalendars": {
+      "message": "Google Apps kalendáře"
+   },
+   "googleAppsCalendarsForce": {
+      "message": "Síla Google více Sign-in vždy výchozí Google Apps Kalendáře"
+   },
+   "googleAppsCalendarsTitle": {
+      "message": "Toto nastavujte pouze, pokud máte Google Apps pro firmy či školství. Pozor, zakáží se pravidelné kontroly Kalendáře Google!"
+   },
+   "googleAppsNote": {
+      "message": "Tímto zakážete pravidelnou kontrolu Kalendáře Google"
+   },
+   "h": {
+      "message": "h"
+   },
+   "helpSupport": {
+      "message": "Nápověda podpora autor tohoto prodloužení!"
+   },
+   "highlightCurrentDay": {
+      "message": "Zvýraznit aktuální den"
+   },
+   "highlightCurrentDayTooltip": {
+      "message": "Když se podíváte do kalendáře v pohledu Měsíc, aktuální den bude krátce pulzovat"
+   },
+   "highlightWeekends": {
+      "message": "Zvýraznit víkendy"
+   },
+   "highlightWeekendsTitle": {
+      "message": "Lehce pozměnit odstíny víkendových dnů, ale jen v 'Pravidelném' měsíčním zobrazení kalendáře"
+   },
+   "hours": {
+      "message": "hodin"
+   },
+   "hoursAgo": {
+      "message": "před $1 hodinami"
+   },
+   "hoursLeft": {
+      "message": "zbývá $1 hodin"
+   },
+   "hoursRemaining": {
+      "message": "Zobrazit zbývající čas do události místo konkrétního času vaší akce"
+   },
+   "hoursRemainingTitle": {
+      "message": "Uskuteční-li se událost do 24hodin, pak se na ikoně zobrazí hodiny např. 4h"
+   },
+   "iconClassic": {
+      "message": "Klasická ikona"
+   },
+   "iconDefault": {
+      "message": "Výchozí ikona"
+   },
+   "iconDefault2WithDate": {
+      "message": "Výchozí ikona s aktuálním datem"
+   },
+   "iconMonochrome": {
+      "message": "Monochromatická ikona"
+   },
+   "iconNew": {
+      "message": "Nová ikona"
+   },
+   "iconNew2": {
+      "message": "Tmavá ikona"
+   },
+   "iconNew2WithDate": {
+      "message": "Tmavá ikona s aktuálním datem"
+   },
+   "iconNewWithDate": {
+      "message": "Nová ikona s aktuálním datem"
+   },
+   "iconTooltip": {
+      "message": "Ikona pro použití s vyskakovacím tlačítkem"
+   },
+   "inVARhour": {
+      "message": "za $1 hodinu"
+   },
+   "inVARhours": {
+      "message": "za $1 hodin"
+   },
+   "inVARminutes": {
+      "message": "za $1 min"
+   },
+   "largest": {
+      "message": "největší"
+   },
+   "loading": {
+      "message": "Načítání ..."
+   },
+   "longerSnoozeTimes": {
+      "message": "Delší časy odložení"
+   },
+   "m": {
+      "message": "m"
+   },
+   "maxDaysAhead": {
+      "message": "Počet dnů, jak dlouho dopředu se mají na ikoně zobrazovat"
+   },
+   "maxDaysAheadTitle": {
+      "message": "Maximální počet dnů pro zobrazení odpočítávání na ikoně"
+   },
+   "min": {
+      "message": "min"
+   },
+   "minimumAmount": {
+      "message": "Musíte darovat nejméně $1"
+   },
+   "minutesAgo": {
+      "message": "před $1 minutami"
+   },
+   "minutesLeft": {
+      "message": "zbývá $1 minut"
+   },
+   "missingOptions": {
+      "message": "Chybí Vám další možnosti? Jsou překlady špatné? Kontakt"
+   },
+   "missingOptions2": {
+      "message": "pro návrhy!"
+   },
+   "month": {
+      "message": "Měsíc"
+   },
+   "monthsArray": {
+      "message": "led,úno,bře,dub,kvě,čen,čec,srp,zář,říj,lis,pro"
+   },
+   "monthsArrayShort": {
+      "message": "leden,únor,březen,duben,květen,červen,červenec,srpen,září,říjen,listopad,prosinec"
+   },
+   "more": {
+      "message": "více"
+   },
+   "moreInfo": {
+      "message": "Více info"
+   },
+   "mustAddCalendar": {
+      "message": "Pokud používáte Google Apps, musíte přidat kalendář"
+   },
+   "mustClickShareLinks": {
+      "message": "Použití jakéhokoli podílu na níže uvedený odkaz popup kalendář jednou a pak můžete odstranit všechny tady!"
+   },
+   "myPreference": {
+      "message": "Moje nastavení"
+   },
+   "needHelp": {
+      "message": "Potřebujete pomoc?"
+   },
+   "notLoggedIn": {
+      "message": "Nejste přihlášen"
+   },
+   "notTaxExempt": {
+      "message": "nejsem plátce daně"
+   },
+   "notificationFontSize": {
+      "message": "Velikost textu oznámení"
+   },
+   "notificationFontSizeTooltip": {
+      "message": "Nastaví velikost písma v názvu události ve vyskakovacím oznámení. Nastavit nejmenší, pokud je název dlouhý a naopak nastavit největší, když je název události krátký"
+   },
+   "notificationSound": {
+      "message": "Zvukové oznámení"
+   },
+   "notificationSoundTitle": {
+      "message": "Přehraje zvuk pokud výše povolíte zvukové oznámení"
+   },
+   "notificationTextToSpeech": {
+      "message": "Hlasové oznámení"
+   },
+   "notificationTextToSpeechTitle": {
+      "message": "Název vaší události se ozve z reproduktorů pomocí převodu textu na řeč. Skvělé, když je počítač ve vedlejší místnosti!"
+   },
+   "notificationZoom": {
+      "message": "Přiblížení oznamovacího okna"
+   },
+   "notificationZoomTooltip": {
+      "message": "Použijte toto ke zmenšení celého textu v okně s upozorněním (vhodné pro osoby s vysokým měřítkem DPI)"
+   },
+   "offlineMode": {
+      "message": "Offline režim"
+   },
+   "offlineModeTitle": {
+      "message": "Upozorňování na události bez připojení k internetu! Upozornění: Události budou uloženy v tomto počítači!"
+   },
+   "onlyPopupsForOwner": {
+      "message": "Zobrazovat pouze upozornění na události z kalendáře jsem vlastní"
+   },
+   "onlyPopupsForOwnerTooltip": {
+      "message": "Upozornění se zobrazí pouze z kalendáře, který vlastníte. To znamená z kalendářů ve sloupci 'Moje kalendáře', a ne z kalendářů, které jsou sdíleny nebo jsou v části 'Ostatní kalendáře'"
+   },
+   "onlyRemoveAfterDonation": {
+      "message": "Link pro přispění lze odebrat pouze po finanční podpoře"
+   },
+   "openCalendar": {
+      "message": "Otevřít kalendář"
+   },
+   "option": {
+      "message": "Možnost"
+   },
+   "optionToCustomizeWith": {
+      "message": "Použijte"
+   },
+   "options": {
+      "message": "Možnosti"
+   },
+   "or": {
+      "message": "nebo"
+   },
+   "orPayUsing_": {
+      "message": "Nebo můžete zaplatit pomocí"
+   },
+   "password": {
+      "message": "Heslo:"
+   },
+   "pastDays": {
+      "message": "Nechat zšednout poslední dny"
+   },
+   "pastDaysTitle": {
+      "message": "Nechat zšednout poslední dny v kalendáři, ale pouze v 'Pravidelném' pohledu měsíčního kalendáře"
+   },
+   "pasteHTML": {
+      "message": "a vložte níže uvedený kód HTML"
+   },
+   "pollingInterval": {
+      "message": "Interval dotazování"
+   },
+   "pollingIntervalTooltip": {
+      "message": "Interval, ve kterém se budou načítat události z Kalendáře Google a tlačítko aktualizovat"
+   },
+   "popupGoogleCalendarWebsite": {
+      "message": "Nechat tlačítko otevřít Google Kalendář na webu místo vyskakovací bubliny"
+   },
+   "popupGoogleCalendarWebsiteHelpTitle": {
+      "message": "Při kliknutí na ikonu tlačítka se otevře Google Kalendář namísto malého vyskakovacího okna. (Držení klávesy CTRL udělá při kliknutí na ikonu také toto!)"
+   },
+   "poweredByGoogle": {
+      "message": "Powered by Google"
+   },
+   "quickAdd": {
+      "message": "Rychle přidat:"
+   },
+   "quickAddDefaultText": {
+      "message": "např. 19 hodin večere u Petra"
+   },
+   "quickAddTitle": {
+      "message": "např. Fotbal začíná za 20 min."
+   },
+   "refresh": {
+      "message": "Aktualizovat"
+   },
+   "rememberQuickAdd": {
+      "message": "Pamatovat si přihlášení pro Rychlé přidání"
+   },
+   "rememberQuickAddTitle": {
+      "message": "Poznámka: Toto uloží jen Google AuthKey ale ne vaše přihlašovací údaje"
+   },
+   "remindersBeforeEvent": {
+      "message": "Zobrazovat pouze upozornění na události s"
+   },
+   "remindersBeforeEventHelpTitle": {
+      "message": "Na vaší stránce s Google kalendáři je na levé straně seznam kalendářů, klepněte na šipku-dolů vedle vámi vybraného kalendáře a zvolte 'Upozornění'. Potom přidejte 'Vyskakovací' připomenutí a nastavte čas připomenutí. Poznámka: Můžete také přepsat tuto možnost pro každou událost při přidávání nebo editaci"
+   },
+   "remindersBeforeEventPopupReminder": {
+      "message": "'Vyskakovací' připomenutí"
+   },
+   "remove": {
+      "message": "Odstranit"
+   },
+   "removeDonationLink": {
+      "message": "Odstranit odkaz vybízející k přispění"
+   },
+   "removeDonationLinkTitle": {
+      "message": "Tím se odstraní odkaz vybízející k finančnímu daru pod kalendáři"
+   },
+   "removeQuickAdd": {
+      "message": "Odebrat 'Rychlé přidání'"
+   },
+   "removeQuickAddTitle": {
+      "message": "Nezobrazovat funkci 'Rychlé přidání'"
+   },
+   "removeShareLinks": {
+      "message": "Odebrat sdílecí odkazy"
+   },
+   "removeShareLinksTooltip": {
+      "message": "Odstraňuje Facebook, Twitter apod. odkazy pod popup kalendářem"
+   },
+   "removeTitle": {
+      "message": "Odebrat kalendář"
+   },
+   "reschedule": {
+      "message": "Přeplánovat"
+   },
+   "save": {
+      "message": "Uložit"
+   },
+   "saveSettings": {
+      "message": "Uložit nastavení"
+   },
+   "saved": {
+      "message": "Uloženo!"
+   },
+   "saving": {
+      "message": "Ukládání ..."
+   },
+   "securely": {
+      "message": "bezpečně."
+   },
+   "seeVideo": {
+      "message": "Podívat se na video"
+   },
+   "selectACalendar": {
+      "message": "Vyberte kalendář"
+   },
+   "selectCalendar": {
+      "message": "Vyberte kalendář!"
+   },
+   "showAgendaOptions": {
+      "message": "Zobrazit odkaz na nastavení v zobrazení agendy"
+   },
+   "showAgendaOptionsTitle": {
+      "message": "Zobrazit odkaz na Nastavení v  pohledu agenda"
+   },
+   "showConsoleMessages": {
+      "message": "Přihlášení do Javascript konzole"
+   },
+   "showConsoleMessagesTitle": {
+      "message": "Meant for debugging only and may slow down the extension a little bit!"
+   },
+   "showDesktopNotifications": {
+      "message": "Zobrazit upozornění na ploše"
+   },
+   "showDesktopNotificationsTitle": {
+      "message": "Povolte toto, aby se objevilo upozornění"
+   },
+   "showEventTimeOnBadge": {
+      "message": "Zobrazit čas události na ikoně tlačítka"
+   },
+   "showEventTimeOnBadgeTooltip": {
+      "message": "Zobrazit na ikoně čas do další události "
+   },
+   "showHeader": {
+      "message": "Zobrazit záhlaví ve vyskakovacím okně"
+   },
+   "showHeaderTooltip": {
+      "message": "Zobrazuje Rychlé přidání a další příkazy v horní části vyskakovacího okna"
+   },
+   "showMinutesLeftInBadge": {
+      "message": "Zobrazí kolik minut ještě zbývá do času události"
+   },
+   "showMinutesLeftInBadgeTitle": {
+      "message": "Pokud se událost uskuteční do jedné hodiny, zobrazí se zbývající minuty"
+   },
+   "showOpenCalendar": {
+      "message": "Zobrazí ikonu otevírající kalendář"
+   },
+   "showOpenCalendarTooltip": {
+      "message": "Zobrazí otevřený kalendář"
+   },
+   "showQuickAdd": {
+      "message": "Zobrazit 'Rychlé přidání'"
+   },
+   "showQuickAddTooltip": {
+      "message": "Zobrazuje rychlé přidání textu v levém horním rohu"
+   },
+   "showRefresh": {
+      "message": "Zobrazit obnovovací ikonu"
+   },
+   "showRefreshTooltip": {
+      "message": "Zobrazuje obnovovací ikonu"
+   },
+   "showTimeSpecificEventsBeforeAllDay": {
+      "message": "Zobrazit době zvláštní události před celodenní události"
+   },
+   "showTimeSpecificEventsBeforeAllDayTooltip": {
+      "message": "Pokud zítra máte celý den akce, a 10 hod. událost to bude zobrazovat 10 hod., místo 1d"
+   },
+   "showViewDropDown": {
+      "message": "Show view dropdown"
+   },
+   "showViewDropDownTooltip": {
+      "message": "Displays the 'View' dropdown list (Note: You need to see this to change your view initially, afterwards you can hide it :)"
+   },
+   "signIn": {
+      "message": "Přihlásit se"
+   },
+   "smallest": {
+      "message": "nejmenší"
+   },
+   "snooze": {
+      "message": "Odložit"
+   },
+   "ssl": {
+      "message": "Vždy používat protokol SSL"
+   },
+   "sslTitle": {
+      "message": "Vždy použít SSL šifrování při přístupu Kalendář Google"
+   },
+   "staySignedIn": {
+      "message": "Neodhlašovat"
+   },
+   "successful": {
+      "message": "Úspěšný"
+   },
+   "supportAndRequestsPrioritized": {
+      "message": "za mou podporu budou vaše žádosti vyřízeny přednostně!"
+   },
+   "timeout": {
+      "message": "Časové zpoždění"
+   },
+   "timeoutTooltip": {
+      "message": "Může odstranit problém s přihlášením pokud máte 10 nebo více kalendářů, nebo pokud máte v kalendáři hodně událostí)"
+   },
+   "toSeeCalendar": {
+      "message": "vidět svůj kalendář!"
+   },
+   "today": {
+      "message": "Dnes"
+   },
+   "tomorrow": {
+      "message": "Zítra"
+   },
+   "unlockFeatures": {
+      "message": "Uvolnit tyto vlastnosti za jakoukoli jednorázovou částku, a ony budou okamžitě k dispozici!"
+   },
+   "view": {
+      "message": "Pohled"
+   },
+   "voiceNotificationOnlyIfIdle": {
+      "message": "Pouze tehdy, pokud jste daleko od počítače po dobu nejméně"
+   },
+   "voiceNotificationOnlyIfIdleTooltip": {
+      "message": "Použijte tuto volbu, pokud chcete slyšet hlas, když počítač nepoužíváte, nebo je nečinný"
+   },
+   "week": {
+      "message": "Týden"
+   },
+   "what": {
+      "message": "Co"
+   },
+   "when": {
+      "message": "Když"
+   },
+   "yesterday": {
+      "message": "Včera"
+   }
+}

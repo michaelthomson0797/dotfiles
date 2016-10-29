@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<title>Checker Plus for Google Calendar - Options</title>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<style>
+		body {font-size:16px}
+		
+		.hide {display:none}
+		
+		@-webkit-keyframes blink {
+		    0% {
+		        opacity:0.5;
+		    }
+		    50% {
+		        opacity:1;
+		    }
+		    100% {
+		        opacity:0.5;
+		    }
+		}
+		
+		#polymerDOM {transition:opacity 0.3s ease-in-out;opacity:1}
+		
+		[jason-unresolved] #polymerDOM {opacity:0}
+		body::before, body::after {left:45%;top:40%;position:absolute}
+		body::before {content:url(images/icons/icon-48.png);transition:all 0.3s}
+		body::after {
+			content:'Loading...';
+			font-size:1.2em;
+			margin-left:55px;
+			margin-top:6px;
+			color:#444;
+		    animation-direction: normal;
+		    animation-duration: 0.6s;
+		    animation-iteration-count: infinite;
+		    animation-name: blink;
+		    animation-timing-function: ease-in-out;
+		}
+		body.explode::before {transform:scale(15);opacity:0}
+		body.explode::after {display:none}
+		
+		paper-toolbar > div, #middle {margin: 0 auto;max-width: 1366px}
+		paper-tabs {width:100%}
+		paper-tabs paper-ripple {color:white !important}
+		paper-tabs #selectionBar {background-color:white !important}
+		paper-tab {text-transform: uppercase;padding-left:20px !important;padding-right:20px !important}
+		paper-tab:hover > div {opacity:1 !important}
+		
+		paper-slider {max-width:150px}
+		.sliders {margin:8px 0 0 30px;color:gray;font-size:0.8em}
+		.sliders paper-slider {margin-top:3px}
+		
+		.quote {color:gray}
+		
+		.testButton {background-color:#F7F7F7;border-radius:50%;transition:background-color 0.1s ease-in}
+		.testButton:hover {background-color:#eee}
+		
+		#playNotificationSound, #playVoice, #testNotification {margin:10px 0 0 15px}
+		
+		.title {-webkit-margin-start:10px !important;-moz-margin-start:10px !important;pointer-events:auto !important}
+		
+		#notificationVoice label {transition:none}
+		
+		#middle {padding:30px 10px}
+		
+		.help {cursor:pointer;color:#eee !important;transition:color 0.1s ease-in}
+		.help:hover {color:gray !important}
+		
+		[value='general'] paper-dropdown-menu {width:254px}
+		
+		#badgeIcon paper-icon-item iron-icon {opacity:1;width:auto;height:auto;-webkit-margin-end:5px;-moz-margin-end:5px}
+		#badgeIcon paper-icon-item .content-icon {width:auto !important}
+
+		[mustDonate] {opacity:0.4;transition:opacity 0.1s ease-in}
+		[mustDonate]:hover {opacity:1}
+		
+		#welcome paper-button {background:#fafafa;margin-top:20px;xxmin-width:350px}
+		#welcome paper-button:hover {background:white}
+		#welcome paper-button iron-icon {margin-right:5px}
+		
+  		#calendarReminders {margin:10px 0 30px;background:#fdfdfd}
+  		#calendarReminders paper-tooltip {min-width:200px}
+  		#calendarReminders paper-tooltip * {font-size:1em !important}
+  		#calendarReminders paper-dropdown-menu, #calendarReminders .reminderValuePerPeriod {margin-top:-17px}
+  		#calendarReminders .reminderValuePerPeriod {text-align:end;width:50px}
+  		.calendarReminderLine {border-bottom:1px solid #eee;padding:20px}
+  		.calendarReminderLine[excluded] {color:gray;opacity:0.5}
+  		.calendarReminder[method='sms'] {display:none !important}
+  		.calendarReminder paper-dropdown-menu {max-width:140px}
+  		.calendarTitle {margin-top:3px;width:200px;text-overflow:ellipsis;overflow:hidden}
+  		.addReminder {margin-top:10px;background:white}
+  		
+  		fieldset {border:1px solid #ddd;border-radius:5px;margin:35px 0;width:700px}
+		
+  	</style>
+
+  	<style id="calendarColors"></style>
+
+	<script src="js/webcomponents-lite.js"></script>
+	
+	<link rel="import" href="extensionCommon.html">
+
+  	<style is="custom-style">
+		paper-toolbar {
+			--primary-color: #3B95D2;
+			--dark-theme-text-color: white;
+		}
+	</style>
+
+	<script src="js/jquery.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/extensionCommon.js"></script>
+  	<script src="js/fvd.js"></script>
+  	<script src="js/checkerPlusForCalendar.js"></script>
+  	<script src="js/options.js"></script>
+  	
+</head>
+
+<body class="fullbleed layout vertical" jason-unresolved>
+	<div id="polymerDOM" class="flex layout vertical">
+	  	<paper-header-panel class="flex">
+		    <paper-toolbar class="medium-tall">
+		    	<img id="logo" src="images/icons/icon-48-white.png" style="vertical-align:middle"/>
+	      		<div class="title"><a class="inherit" href="https://jasonsavard.com?ref=CalendarOptionsTitle">Checker Plus for Google Calendar</a></div>
+	      		<div class="flex"></div>
+	      		<paper-button id="version">version</paper-button>
+	      		<a class="inherit" href="https://jasonsavard.com/wiki/Checker_Plus_for_Google_Calendar_changelog?ref=CalendarOptions"><paper-button><span msg="changelog"></span></paper-button></a>
+	      		<a class="inherit" href="donate.html"><paper-button><span msg="contribute"></span></paper-button></a>
+	      		<a class="inherit" href="https://jasonsavard.com/wiki/Checker_Plus_for_Google_Calendar?ref=CalendarOptions"><paper-button><span msg="help"></span></paper-button></a>
+				<paper-tabs id="mainTabs" selected="notifications" attr-for-selected="value" class="bottom self-end" scrollable hide-scroll-buttons> <!-- scrollable hide-scroll-buttons -->
+					<paper-tab value="welcome"><span msg="welcome"></span></paper-tab>
+					<paper-tab value="notifications"><span msg="notifications"></span></paper-tab>
+	        		<paper-tab value="general"><span msg="general"></span></paper-tab>
+	        		<paper-tab value="accounts"><span msg="accounts"></span></paper-tab>
+	        		<paper-tab value="button"><span msg="button"></span></paper-tab>
+	        		<paper-tab value="widget" hidden><span msg="widget"></span></paper-tab>
+	        		<paper-tab value="admin"><span msg="admin"></span></paper-tab>
+				</paper-tabs>
+			</paper-toolbar>
+			
+			<div id="middle">
+			
+				<neon-animated-pages id="pages" class="flex" attr-for-selected="value" entry-animation="fade-in-animation" exit-animation="fade-out-animation"><!-- entry-animation="slide-from-right-animation" exit-animation="slide-from-left-animation" -->
+
+					<neon-animatable value="welcome">
+						
+						<paper-dropdown-menu msgLabel="language">
+					  		<paper-menu id="lang" class="dropdown-content" attr-for-selected="value" storage="lang">
+					    		<paper-item value="ar">العربية</paper-item>
+					    		<paper-item value="ca">català</paper-item>
+					    		<paper-item value="cs">čeština</paper-item>
+					    		<paper-item value="de">Deutsch</paper-item>
+					    		<paper-item value="en">English</paper-item>
+					    		<paper-item value="es">español</paper-item>
+					    		<paper-item value="fa">فارسی</paper-item>
+					    		<paper-item value="fr">français</paper-item>
+					    		<paper-item value="he">עברית</paper-item>
+					    		<paper-item value="it">italiano</paper-item>
+					    		<paper-item value="hu">magyar</paper-item>
+					    		<paper-item value="nl">Nederlands</paper-item>
+					    		<paper-item value="no">Norsk</paper-item>
+					    		<paper-item value="pl">polski</paper-item>
+					    		<paper-item value="pt">português</paper-item>
+					    		<paper-item value="pt-BR">português (Brasil)</paper-item>
+					    		<paper-item value="sv">svenska</paper-item>
+					    		<paper-item value="ru">pусский</paper-item>
+					    		<paper-item value="tr">Türkçe</paper-item>
+					    		<paper-item value="ja">日本語</paper-item>
+					    		<paper-item value="zh-CN">简体中文</paper-item>
+					    		<paper-item value="zh-TW">繁體中文</paper-item>
+					    		<paper-item value="ko">한국어</paper-item>
+					  		</paper-menu>
+						</paper-dropdown-menu>
+						
+						<div id="welcome" class="layout vertical start">
+							<div id="guideGrantAccessButton">
+								<paper-button class="grantAccessButton colored" raised>
+									<iron-icon icon="social:person"></iron-icon>
+									<span msg="grantAccess">Grant access</span>
+								</paper-button>
+								<a class="help inherit" href="https://jasonsavard.com/wiki/Granting_access" target="_blank"><iron-icon icon="help"></iron-icon></a>
+							</div>
+							<div id="guides" class="hide">
+								<div class="layout vertical start">
+									<paper-button id="notificationsGuide" raised>
+									  	<iron-icon style="color:gray" icon="social:notifications"></iron-icon>
+									  	<span msg="customizeNotifications">Customize the notifications</span>
+									</paper-button>
+									<paper-tooltip for="notificationsGuide" animation-delay="0" msgPosition="right"><span msg="notificationsGuideToolTip">Sounds, Voices, Desktop notifications</span></paper-tooltip>
+									<!--a class="inherit" target="_blank" href="https://jasonsavard.com/wiki/Using_calendars_from_multiple_accounts"><paper-button raised><span msg="usingCalendarsFromMultipleAccounts">Using calendars from multiple accounts?</span></paper-button></a-->
+								</div>
+							</div>
+						</div>
+						
+					</neon-animatable>
+
+					<neon-animatable value="notifications">
+						<div class="layout horizontal center">
+							<paper-dropdown-menu id="notificationSound" msgLabel="notificationSound" mustDonate>
+						  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="notificationSound">
+						    		<paper-item value="" msg="off">off</paper-item>
+						    		<paper-item disabled class="separator"></paper-item>
+						    		<paper-item value="ding.ogg" msg="ding"></paper-item>
+						    		<paper-item value="bellStrike.ogg">Bell Strike</paper-item>
+						    		<paper-item value="boing.ogg">Boing</paper-item>
+						    		<paper-item value="calendarReminder.ogg">Calendar reminder</paper-item>
+						    		<paper-item value="reminderMale.ogg">Reminder male voice</paper-item>
+						    		<paper-item value="reminderFemale.ogg">Reminder female voice</paper-item>
+						    		<paper-item value="sunGong.ogg">Sun Gong</paper-item>
+						    		<paper-item value="youveGotAReminder.ogg">You've got a reminder</paper-item>
+						    		<paper-item disabled class="separator"></paper-item>
+						    		<paper-item value="custom"><span msg="custom"></span></paper-item>
+						  		</paper-menu>
+							</paper-dropdown-menu>
+							<div id="soundOptions" class="layout horizontal">
+								<paper-icon-button id="playNotificationSound" icon="av:play-arrow" class="testButton"></paper-icon-button>
+								<div class="layout horizontal center sliders">
+									<span msg="volume">Volume</span> <paper-slider id="notificationSoundVolume" storage="notificationSoundVolume"></paper-slider>
+								</div>
+							</div>
+						</div>
+			
+						<div class="layout horizontal" hide-from-firefox>
+							<paper-dropdown-menu id="notificationVoice" msgLabel="notificationTextToSpeech">
+						  		<paper-menu id="voiceMenu" class="dropdown-content" attr-for-selected="value" storage="notificationVoice">
+						    		<paper-item value="" msg="off">off</paper-item>
+						    		<paper-item disabled class="separator"></paper-item>
+									<template id="t" is="dom-bind">
+								  		<template is="dom-repeat" items="{{data}}">
+								        	<paper-item value="{{item.value}}">{{item.label}}</paper-item>
+								    	</template>
+									</template>
+									<paper-item disabled class="separator"></paper-item>
+								    <paper-item value="addVoice"><span msg="addSpeechEngines">Add voice</span>...</paper-item>
+						  		</paper-menu>
+							</paper-dropdown-menu>
+							<paper-tooltip msgPosition="right" for="notificationVoice"><span msg="notificationTextToSpeechTitle"></span></paper-tooltip>
+							<div id="voiceOptions" style="margin-top:5px">
+								<div class="layout horizontal center">
+									<paper-icon-button id="playVoice" icon="av:play-arrow" class="testButton"></paper-icon-button>
+									<div class="layout horizontal center sliders">
+										<span msg="volume">Volume</span> <paper-slider id="voiceSoundVolume" storage="voiceSoundVolume"></paper-slider> <span msg="pitch">Pitch</span> <paper-slider id="pitch" storage="pitch" min="0.1" max="2" step="0.1"></paper-slider> <span msg="rate">Rate</span> <paper-slider id="rate" storage="rate" min="0.1" max="2" step="0.1"></paper-slider>
+									</div>
+									<iron-icon icon="editor:format-quote" class="quote" style="transform:scaleX(-1)"></iron-icon><paper-input id="voiceTestText" no-label-float msgValue="voiceTest" style="-webkit-margin-start:10px;-moz-margin-start:10px;width:100px"></paper-input><iron-icon icon="editor:format-quote" class="quote"></iron-icon>
+									<paper-dropdown-menu id="voiceNotificationOnlyIfIdleInterval" msgLabel="voiceNotificationOnlyIfIdle">
+								  		<paper-menu id="voiceNotificationOnlyIfIdleIntervalMenu" class="dropdown-content" attr-for-selected="value" storage="voiceNotificationOnlyIfIdleInterval">
+								    		<paper-item value="" msg="alwaysSpeak">Always speak</paper-item>
+								    		<paper-item value="15" msg="Xseconds" msgArg1="15">15</paper-item>
+								    		<paper-item value="30" msg="Xseconds" msgArg1="30">30</paper-item>
+								    		<paper-item value="60" msg="Xminute" msgArg1="1">1</paper-item>
+								    		<paper-item value="120" msg="Xminutes" msgArg1="2">2</paper-item>
+								  		</paper-menu>
+									</paper-dropdown-menu>
+									<a class="help inherit" style="margin:28px 0 0 7px" href="https://jasonsavard.com/wiki/Voice_Notifications" target="_blank"><iron-icon icon="help"></iron-icon></a>
+								</div>
+							</div>
+						</div>
+						
+						<div class="layout horizontal center">
+							<paper-dropdown-menu id="desktopNotification" msgLabel="showDesktopNotifications">
+						  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="desktopNotification">
+						  			<paper-item value="" msg="off">off</paper-item>
+						    		<paper-item id="textNotification" value="text" msg="textNotification">textNotification</paper-item>
+						    		<paper-item id="richNotification" value="rich" msg="richNotification" chrome-only>richNotification</paper-item>
+						    		<paper-item id="popupWindowNotification" value="popupWindow" msg="popupWindow">popupWindow</paper-item>
+						  		</paper-menu>
+							</paper-dropdown-menu>
+					  		<paper-tooltip for="textNotification" msgPosition="right"><span msg="textNotificationToolTip"></span></paper-tooltip>
+					  		<paper-tooltip for="richNotification" msgPosition="right"><span msg="richNotificationToolTip"></span></paper-tooltip>
+					  		<paper-tooltip for="popupWindowNotification" msgPosition="right"><span msg="popupWindowNotificationToolTip"></span></paper-tooltip>
+					  		<div>
+								<paper-icon-button id="testNotification" icon="social:notifications" class="testButton"></paper-icon-button> <!-- markunread-mailbox -->
+								<paper-tooltip for="testNotification"><span msg="testIt"></span></paper-tooltip>
+					  		</div>
+					  		<a class="help inherit" style="margin:9px 0 0 7px" href="https://jasonsavard.com/wiki/Desktop_notifications" target="_blank"><iron-icon icon="help"></iron-icon></a>
+					  	</div>
+					  	
+					  	<div id="desktopNotificationOptions">
+					  	
+					  		<div id="richNotificationOptions">
+								<paper-dropdown-menu style="width:350px">
+							  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="notificationGrouping">
+							    		<paper-item value="groupNotifications" msg="groupNotifications">groupNotifications</paper-item>
+							    		<paper-item value="individualNotifications" value="rich" msg="individualNotifications">individualNotifications</paper-item>
+							  		</paper-menu>
+								</paper-dropdown-menu>
+				
+								<paper-dropdown-menu msgLabel="hideAfter">
+							  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="showNotificationDuration">
+							    		<paper-item value="7" msg="Xseconds" msgArg1="7">7</paper-item>
+							    		<paper-item value="25" msg="Xseconds" msgArg1="25">25</paper-item>
+							    		<paper-item value="never" msg="never">never hide</paper-item>
+							  		</paper-menu>
+								</paper-dropdown-menu>
+				
+								<paper-dropdown-menu msgLabel="showPendingNotificationsEvery" style="width:342px">
+							  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="pendingNotificationsInterval">
+							    		<paper-item value="" msg="off">off</paper-item>
+							    		<paper-item value="5" msg="Xminutes" msgArg1="5">5</paper-item>
+							    		<paper-item value="10" msg="Xminutes" msgArg1="10">10</paper-item>
+							    		<paper-item value="15" msg="Xminutes" msgArg1="15">15</paper-item>
+							    		<paper-item value="30" msg="Xminutes" msgArg1="30">30</paper-item>
+							    		<paper-item value="60" msg="Xminutes" msgArg1="60">60</paper-item>
+							  		</paper-menu>
+								</paper-dropdown-menu>
+								<paper-icon-button id="testPendingReminder" icon="social:notifications" class="testButton" style="vertical-align: top;margin-top: 22px"></paper-icon-button>
+								<paper-tooltip for="testPendingReminder"><span msg="testIt"></span></paper-tooltip>
+								
+								<div id="notificationButtons">
+									<paper-dropdown-menu msgLabel="clickingXOnNotification">
+								  		<paper-menu class="dropdown-content" selected="0">
+								    		<paper-item disabled msg="dismissesEvents">Dismisses events</paper-item>
+										</paper-menu>
+									</paper-dropdown-menu>
+										
+									<paper-dropdown-menu msgLabel="notificationButton1">
+								  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="notificationButton1">
+								    		<paper-item value="" msg="hideButton">hidebutton</paper-item>
+								    		<paper-item disabled class="separator"></paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_5" msg="Xminutes" msgArg1="5">5</paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_10" msg="Xminutes" msgArg1="10">10</paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_15" msg="Xminutes" msgArg1="15">15</paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_30" msg="Xminutes" msgArg1="30">30</paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_45" msg="Xminutes" msgArg1="45">45</paper-item>
+								    		<paper-item class="snoozeOption" value="hours_1" msg="Xhour" msgArg1="1">1 hour</paper-item>
+								    		<paper-item class="snoozeOption" value="hours_2" msg="Xhours" msgArg1="2">2 hour</paper-item>
+								    		<paper-item class="snoozeOption" value="hours_4" msg="Xhours" msgArg1="4">4 hour</paper-item>
+								    		<paper-item class="snoozeOption" value="hours_8" msg="Xhours" msgArg1="8">8 hour</paper-item>
+								    		<paper-item class="snoozeOption" value="days_1" msg="Xday" msgArg1="1">1 day</paper-item>
+								    		<paper-item class="snoozeOption" value="days_2" msg="Xdays" msgArg1="2">2 day</paper-item>
+								    		<paper-item class="snoozeOption" value="days_7" msg="Xdays" msgArg1="7">7 day</paper-item>
+								    		<paper-item disabled class="separator"></paper-item>
+								    		<paper-item value="snoozeTimes" msg="moreSnoozeTimes">moreSnoozeTimes</paper-item>
+								    		<paper-item disabled class="separator"></paper-item>
+								    		<paper-item value="location|hangout" msg="showLocationOrSource">showLocationOrSource</paper-item>
+								    		<paper-item disabled class="separator"></paper-item>
+								    		<paper-item value="dismiss" msg="dismiss">dismiss</paper-item>
+								  		</paper-menu>
+									</paper-dropdown-menu>
+				
+									<paper-dropdown-menu msgLabel="notificationButton2">
+								  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="notificationButton2">
+								    		<paper-item value="" msg="hideButton">hidebutton</paper-item>
+								    		<paper-item disabled class="separator"></paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_5" msg="Xminutes" msgArg1="5">5</paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_10" msg="Xminutes" msgArg1="10">10</paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_15" msg="Xminutes" msgArg1="15">15</paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_30" msg="Xminutes" msgArg1="30">30</paper-item>
+								    		<paper-item class="snoozeOption" value="minutes_45" msg="Xminutes" msgArg1="45">45</paper-item>
+								    		<paper-item class="snoozeOption" value="hours_1" msg="Xhour" msgArg1="1">1 hour</paper-item>
+								    		<paper-item class="snoozeOption" value="hours_2" msg="Xhours" msgArg1="2">2 hour</paper-item>
+								    		<paper-item class="snoozeOption" value="hours_4" msg="Xhours" msgArg1="4">4 hour</paper-item>
+								    		<paper-item class="snoozeOption" value="hours_8" msg="Xhours" msgArg1="8">8 hour</paper-item>
+								    		<paper-item class="snoozeOption" value="days_1" msg="Xday" msgArg1="1">1 day</paper-item>
+								    		<paper-item class="snoozeOption" value="days_2" msg="Xdays" msgArg1="2">2 day</paper-item>
+								    		<paper-item class="snoozeOption" value="days_7" msg="Xdays" msgArg1="7">7 day</paper-item>
+								    		<paper-item disabled class="separator"></paper-item>
+								    		<paper-item value="snoozeTimes" msg="moreSnoozeTimes">moreSnoozeTimes</paper-item>
+								    		<paper-item disabled class="separator"></paper-item>
+								    		<paper-item value="location|hangout" msg="showLocationOrSource">showLocationOrSource</paper-item>
+								    		<paper-item disabled class="separator"></paper-item>
+								    		<paper-item value="dismiss" msg="dismiss">dismiss</paper-item>
+								  		</paper-menu>
+									</paper-dropdown-menu>
+									
+									<paper-dropdown-menu msgLabel="showCalendarNames">
+								  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="showCalendarInNotification">
+								    		<paper-item value="never" msg="off">off</paper-item>
+								    		<paper-item value="onlyNonPrimary" msg="onlyNonPrimary">onlyNonPrimary</paper-item>
+								    		<paper-item value="always" msg="always">always</paper-item>
+								  		</paper-menu>
+									</paper-dropdown-menu>
+								</div>
+														
+					  		</div>
+					  		
+					  		<div id="popupWindowNotificationOptions" style="margin-left:8px">
+					  			<paper-checkbox storage="hideDelete"><span msg="hideDelete">hideDelete</span></paper-checkbox>
+					  		</div>
+			
+							<div class="layout vertical start" style="margin:0 8px 8px">
+								<paper-checkbox storage="doNotShowNotificationsForAlldayEvents"><span msg="doNotShowNotificationsForAlldayEvents">doNotShowNotificationsForAlldayEvents</span></paper-checkbox>				
+								<paper-checkbox id="doNotShowPastNotifications" storage="doNotShowPastNotifications"><span msg="doNotShowPastNotifications">doNotShowPastNotifications</span></paper-checkbox><paper-tooltip msgPosition="right" for="doNotShowPastNotifications"><span msg="doNotShowPastNotificationsTitle"></span></paper-tooltip>
+								<paper-checkbox storage="doNotShowNotificationsForRepeatingEvents"><span msg="doNotShowNotificationsForRepeatingEvents">doNotShowNotificationsForRepeatingEvents</span></paper-checkbox>
+								<div chrome-only>
+									<paper-checkbox id="runInBackground" permissions="background"><span msg="runInBackground"></span></paper-checkbox> <a class="help inherit" href="https://jasonsavard.com/wiki/Run_in_background?ref=CalendarOptions" target="_blank"><iron-icon icon="help"></iron-icon></a>
+									<paper-tooltip msgPosition="right" for="runInBackground"><span msg="runInBackgroundToolTip"></span></paper-tooltip>
+								</div>
+							</div>
+							
+					  	</div>
+					  	
+						<dom-module id="calendar-reminders">
+							<template id="node">
+						  		<template is="dom-repeat" items="{{calendars}}" as="calendar">
+						  			<div class="layout horizontal start calendarReminderLine" calendar-id$="{{calendar.id}}" excluded$={{isCalendarExcluded(calendar)}}>
+						  				<paper-checkbox class="calendarReminderLineCheckbox" color-id$={{calendar.colorId}} checked$={{!isCalendarExcluded(calendar)}}><div class="calendarTitle">{{displayCalendarName(calendar)}}</div></paper-checkbox>
+							  			<div class="layout vertical start" style="margin-top:-17px">
+								  			<template is="dom-repeat" items="{{calendar.defaultReminders}}" as="defaultReminder">
+								  				<div class="layout horizontal center calendarReminder" method$={{defaultReminder.method}}>
+													<paper-dropdown-menu>
+												  		<paper-menu class="dropdown-content reminderMethod" attr-for-selected="value" selected="{{defaultReminder.method}}">
+												    		<paper-item value="email" msg="email">Email</paper-item>
+												    		<paper-item value="popup" msg="notification">Nnnotification</paper-item>
+												    	</paper-menu>
+												    </paper-dropdown-menu>
+												    <paper-input class="reminderMinutes" value="{{defaultReminder.minutes}}" hidden></paper-input>
+												    <paper-input class="reminderValuePerPeriod"></paper-input>
+													<paper-dropdown-menu>
+												  		<paper-menu class="dropdown-content reminderPeriod" attr-for-selected="value">
+												    		<paper-item value="minutes" msg="minutes">minutes</paper-item>
+												    		<paper-item value="hours" msg="hours">hours</paper-item>
+												    		<paper-item value="days" msg="days">days</paper-item>
+												    		<paper-item value="weeks" msg="weeks">weeks</paper-item>
+												    	</paper-menu>
+												    </paper-dropdown-menu>
+												    <div msg="beforeEachEvent">before each event</div>
+												    <paper-icon-button class="deleteReminder" icon="icons:delete"></paper-icon-button>
+												    <paper-input class="lastUpdated" value="{{defaultReminder.lastUpdated}}" hidden></paper-input>
+								  				</div>
+								  			</template>
+								  			<paper-button class="addReminder" on-tap="addReminder" raised hidden$="{{!canCalendarHaveReminders(calendar)}}"><span msg="addNotification">Add a notification</span></paper-button>
+							  			</div>
+						  			</div>
+						    	</template>
+			   				</template>
+			   			</dom-module>
+			   			
+			   			<br>
+
+						<div class="layout vertical start">
+						  	<paper-material id="calendarReminders">
+						  		<div class="layout horizontal center" style="margin:0 20px">
+						  			<h3 msg="notificationsForCalendars"></h3>
+						  			<div class="flex"></div>
+								  	<paper-button id="refresh">
+								  		<iron-icon icon="icons:refresh"></iron-icon>
+								  		<span msg="refresh">Refresh</span>
+									</paper-button>
+						  		</div>
+								<calendar-reminders></calendar-reminders>
+							</paper-material>
+						</div>
+											  	
+				  	</neon-animatable>
+				  	
+			  		<neon-animatable value="general">
+						
+						<div class="layout vertical start">
+							<paper-checkbox storage="24hourMode"><span msg="24hourMode"></span></paper-checkbox>
+							
+							<div>
+								<paper-checkbox storage="showContextMenuItem" id="showContextMenuItem"><span msg="showContextMenuItem"></span></paper-checkbox> <a class="help inherit" href="https://jasonsavard.com/wiki/Add_the_current_browser_tab_to_your_calendar?ref=CalendarOptions" target="_blank"><iron-icon icon="help"></iron-icon></a>
+							</div>
+							<paper-checkbox storage="removeShareLinks"><span msg="removeShareLinks"></span></paper-checkbox>
+							<paper-checkbox storage="highlightWeekends"><span msg="highlightWeekends"></span></paper-checkbox>
+							<paper-checkbox storage="pastDays"><span msg="pastDays"></span></paper-checkbox>
+							<paper-checkbox storage="showSnoozedEvents" id="showSnoozedEvents"><span msg="snoozedEvents"></span></paper-checkbox><paper-tooltip for="showSnoozedEvents" msgPosition="right"><span msg="snoozedEventsToolTip"></span></paper-tooltip>
+							<paper-checkbox storage="showDayOfYear"><span msg="dayOfYear"></span></paper-checkbox>
+							<div class="layout horizontal center">
+								<paper-checkbox storage="showWeekNumbers"><span msg="showWeekNumbers"></span></paper-checkbox>
+								<paper-dropdown-menu id="weekNumberCalculation" msgLabel="weekNumberCalculation">
+							  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="weekNumberCalculation">
+							    		<paper-item value="ISO">ISO</paper-item>
+							    		<paper-item value="local" msg="local">local</paper-item>
+							    	</paper-menu>
+							    </paper-dropdown-menu>
+							</div>
+	
+							<div>
+								<paper-checkbox storage="syncDND"><span msg="syncDND"></span></paper-checkbox>  <a class="help inherit" href="https://jasonsavard.com/wiki/Do_Not_Disturb_(DND)" target="_blank"><iron-icon icon="help"></iron-icon></a>
+							</div>
+	
+							<paper-dropdown-menu id="maxDaysAhead" msgLabel="maxDaysAhead">
+						  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="maxDaysAhead">
+						    		<paper-item value="1">1</paper-item>
+						    		<paper-item value="2">2</paper-item>
+						    		<paper-item value="3">3</paper-item>
+						    		<paper-item value="4">4</paper-item>
+						    		<paper-item value="5">5</paper-item>
+						    		<paper-item value="6">6</paper-item>
+						    		<paper-item value="7">7</paper-item>
+						    		<paper-item value="14">14</paper-item>
+						    		<paper-item value="21">21</paper-item>
+						    	</paper-menu>
+						    </paper-dropdown-menu>
+						    <paper-tooltip msgPosition="right" for="maxDaysAhead"><span msg="maxDaysAheadTitle"></span></paper-tooltip>
+	
+							<paper-dropdown-menu msgLabel="weeksInMonth">
+						  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="weeksInMonth">
+						    		<paper-item value="auto" msg="auto">auto</paper-item>
+						    		<paper-item value="6">6</paper-item>
+						    	</paper-menu>
+						    </paper-dropdown-menu>
+
+							<paper-dropdown-menu msgLabel="customView">
+						  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="customView">
+						    		<paper-item value="2" msg="Xweeks" msgArg1="2">2</paper-item>
+						    		<paper-item value="3" msg="Xweeks" msgArg1="3">3</paper-item>
+						    		<paper-item value="4" msg="Xweeks" msgArg1="4">4</paper-item>
+						    		<paper-item value="5" msg="Xweeks" msgArg1="5">5</paper-item>
+						    		<paper-item value="6" msg="Xweeks" msgArg1="6">6</paper-item>
+						    	</paper-menu>
+						    </paper-dropdown-menu>
+	
+							<paper-dropdown-menu id="slotDuration" msgLabel="slotDuration">
+						  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="slotDuration">
+						    		<paper-item value="15" msg="Xminutes" msgArg1="15">15</paper-item>
+						    		<paper-item value="30" msg="Xminutes" msgArg1="30">30</paper-item>
+						    		<paper-item value="45" msg="Xminutes" msgArg1="45">45</paper-item>
+						    		<paper-item value="60" msg="Xminutes" msgArg1="60">60</paper-item>
+						    		<paper-item value="15" msg="Xminutes" msgArg1="15">15</paper-item>
+						    	</paper-menu>
+						    </paper-dropdown-menu>
+						    <paper-tooltip msgPosition="right" for="slotDuration"><span msg="slotDurationToolTip"></span></paper-tooltip>
+						    
+						    <div class="layout horizontal">
+								<paper-dropdown-menu msgLabel="hideMorningHoursBefore" mustDonate>
+							  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="hideMorningHoursBefore">
+							    		<paper-item value="0">12am</paper-item>
+							    		<paper-item value="0:30">12:30am</paper-item>
+							    		<paper-item value="1">1am</paper-item>
+							    		<paper-item value="1:30">1:30am</paper-item>
+							    		<paper-item value="2">2am</paper-item>
+							    		<paper-item value="2:30">2:30am</paper-item>
+							    		<paper-item value="3">3am</paper-item>
+							    		<paper-item value="3:30">3:30am</paper-item>
+							    		<paper-item value="4">4am</paper-item>
+							    		<paper-item value="4:30">4:30am</paper-item>
+							    		<paper-item value="5">5am</paper-item>
+							    		<paper-item value="5:30">5:30am</paper-item>
+							    		<paper-item value="6">6am</paper-item>
+							    		<paper-item value="6:30">6:30am</paper-item>
+							    		<paper-item value="7">7am</paper-item>
+							    		<paper-item value="7:30">7:30am</paper-item>
+							    		<paper-item value="8">8am</paper-item>
+							    		<paper-item value="8:30">8:30am</paper-item>
+							    		<paper-item value="9">9am</paper-item>
+							    		<paper-item value="9:30">9:30am</paper-item>
+							    		<paper-item value="10">10:00am</paper-item>
+							    	</paper-menu>
+							    </paper-dropdown-menu>
+								<paper-dropdown-menu msgLabel="andNightTimesAfter" mustDonate>
+							  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="hideNightHoursAfter">
+							    		<paper-item value="5pm">5am</paper-item>
+							    		<paper-item value="5:30pm">5:30pm</paper-item>
+							    		<paper-item value="6pm">6pm</paper-item>
+							    		<paper-item value="6:30pm">6:30pm</paper-item>
+							    		<paper-item value="7pm">7pm</paper-item>
+							    		<paper-item value="7:30pm">7:30pm</paper-item>
+							    		<paper-item value="8pm">8pm</paper-item>
+							    		<paper-item value="8:30pm">8:30pm</paper-item>
+							    		<paper-item value="9pm">9pm</paper-item>
+							    		<paper-item value="9:30pm">9:30pm</paper-item>
+							    		<paper-item value="10pm">10:00pm</paper-item>
+							    		<paper-item value="10:30pm">10:30pm</paper-item>
+							    		<paper-item value="11pm">11:00pm</paper-item>
+							    		<paper-item value="11:30pm">11:30pm</paper-item>
+							    		<paper-item value="24">12am</paper-item>
+							    	</paper-menu>
+							    </paper-dropdown-menu>
+						    </div>
+						    
+						    <a class="inherit" href="https://jasonsavard.com/wiki/Skins_and_Themes?ref=CalendarOptions"><paper-button msg="addSkinsOrThemes"></paper-button></a>
+							
+						</div>
+						
+			  		</neon-animatable>
+			  		
+			  		<neon-animatable value="accounts">
+			  			
+						<div id="oauthNotGranted">
+							<div id="defaultAccount" class="hide">
+								<span msg="currentDefaultHasNotBeenGrantedAccess">Your current <a target="_blank" href="https://jasonsavard.com/wiki/Using_calendars_from_multiple_accounts" msg="currentDefaultHasNotBeenGrantedAccess_DefaultAccount">default account</a> <span id="defaultAccountEmail" style="font-weight:bold" msg="currentDefaultHasNotBeenGrantedAccess_EMAIL_HERE">blah@blah.com</span> has not been granted access!</span>
+							</div>
+							<br>
+							<paper-button class="grantAccessButton colored" raised><span msg="grantAccess">Grant access</span></paper-button> <a class="help inherit" href="https://jasonsavard.com/wiki/Granting_access" target="_blank"><iron-icon icon="help"></iron-icon></a>
+							<br><br>
+						</div>
+						
+						<div id="oauthOptions">
+							<div id="grantedTo">
+								<span msg="grantedTo" style="color:gray">Granted to</span>: <span id="emailsGrantedPermissionToContacts"></span> <paper-button id="grantAccessAgain"><span msg="grantAccessAgain">Grant access again</span></paper-button> <paper-button id="revokeAccess"><span msg="revokeAccess">Revoke access</span></paper-button>
+							</div>
+				    		<div style="margin-top:10px">
+								<a class="inherit" target="_blank" href="https://jasonsavard.com/wiki/Using_calendars_from_multiple_accounts"><paper-button raised><span msg="usingCalendarsFromMultipleAccounts">Using calendars from multiple accounts?</span></paper-button></a>
+				    		</div>
+						</div>
+	
+			  		</neon-animatable>
+			  		
+			  		<neon-animatable value="button">
+			  		
+			  			<div class="layout vertical">
+				  			<div class="layout horizontal center">
+					  			<iron-icon id="currentBadgeIcon" src="images/icons/icon-19_default.png" style="width:19px;height:19px"></iron-icon>
+					  			<paper-dropdown-menu style="width:300px" no-label-float mustDonate>
+								  	<paper-menu id="badgeIcon" class="dropdown-content" attr-for-selected="value" storage="badgeIcon">
+								  		<paper-icon-item value="default"><iron-icon src="images/icons/icon-19_default_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_default.png" item-icon></iron-icon> <span msg="iconDefault">hello</span></paper-icon-item>
+								  		<paper-icon-item value="default3WithDate" hide-from-firefox><iron-icon src="images/icons/icon-19_default3WithDate_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_default3WithDate.png" item-icon></iron-icon> <span msg="iconDefault2WithDate">hello</span></paper-icon-item>
+								  		<paper-icon-item value="default2WithDate" hide-from-firefox><iron-icon src="images/icons/icon-19_default2WithDate_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_default2WithDate.png" item-icon></iron-icon> <span msg="iconDefault2WithDateInverted">hello</span></paper-icon-item>
+								  		<paper-icon-item value="classic"><iron-icon src="images/icons/icon-19_classic_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_classic.png" item-icon></iron-icon> <span msg="iconClassic">hello</span></paper-icon-item>
+								  		<paper-icon-item value="new"><iron-icon src="images/icons/icon-19_new_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_new.png" item-icon></iron-icon> <span msg="iconNew">hello</span></paper-icon-item>
+								  		<paper-icon-item value="newWithDate" hide-from-firefox><iron-icon src="images/icons/icon-19_newWithDate_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_newWithDate.png" item-icon></iron-icon> <span msg="iconNewWithDate">hello</span></paper-icon-item>
+								  		<paper-icon-item value="new2"><iron-icon src="images/icons/icon-19_new2_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_new2.png" item-icon></iron-icon> <span msg="iconNew2">hello</span></paper-icon-item>
+								  		<paper-icon-item value="new2WithDate" hide-from-firefox><iron-icon src="images/icons/icon-19_new2WithDate_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_new2WithDate.png" item-icon></iron-icon> <span msg="iconNew2WithDate">hello</span></paper-icon-item>
+								  		<paper-icon-item value="default_monochrome"><iron-icon src="images/icons/icon-19_default_monochrome_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_default_monochrome.png" item-icon></iron-icon> <span msg="iconMonochrome2">hello</span></paper-icon-item>
+								  		<paper-icon-item value="default_monochromeWithDate" hide-from-firefox><iron-icon src="images/icons/icon-19_default_monochromeWithDate_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_default_monochromeWithDate.png" item-icon></iron-icon> <span msg="iconMonochrome2WithDate">hello</span></paper-icon-item>
+								  		<paper-icon-item value="monochrome"><iron-icon src="images/icons/icon-19_monochrome_offline.png" item-icon></iron-icon> <iron-icon src="images/icons/icon-19_monochrome.png" item-icon></iron-icon> <span msg="iconMonochrome">hello</span></paper-icon-item>
+								  	</paper-menu>
+								</paper-dropdown-menu>
+			  				</div>
+			  				
+			  				<div style="margin-bottom:20px">
+								<paper-dropdown-menu id="browserButtonAction" msgLabel="buttonClickAction" style="width:320px">
+							  		<paper-menu class="dropdown-content" attr-for-selected="value" storage="browserButtonAction">
+							    		<paper-item value="popup">
+							    			<paper-item-body two-line>
+							    				<div msg="openPopupPreview">openPopupPreview</div>
+							    				<div secondary msg="recommended">recommended</div>
+							    			</paper-item-body>
+							    		</paper-item>
+										<paper-item value="checkerPlusTab" msg="openCheckerPlusTab">openCheckerPlusTab</paper-item>
+							    		<paper-item value="googleCalendar" msg="openGoogleCalendar">openGoogleCalendar</paper-item>
+							    	</paper-menu>
+							    </paper-dropdown-menu>
+			  				</div>
+			  				
+			  				<div>
+								<paper-checkbox id="showEventTimeOnBadge" storage="showEventTimeOnBadge"><span msg="showEventTimeOnBadge"></span></paper-checkbox> <a class="help inherit" href="https://jasonsavard.com/wiki/Calendar_button" target="_blank"><iron-icon icon="help"></iron-icon></a>
+			  				</div>
+							<div id="showEventTimeOnBadgeOptions" class="layout vertical hide" style="margin-left:30px">
+								<paper-checkbox id="showMinutesLeftInBadge" storage="showMinutesLeftInBadge"><span msg="showMinutesLeftInBadge"></span></paper-checkbox>
+								<paper-checkbox id="showHoursLeftInBadge" storage="showHoursLeftInBadge"><span msg="hoursRemaining"></span></paper-checkbox>
+								<paper-checkbox id="showDaysLeftInBadge" storage="showDaysLeftInBadge"><span msg="daysRemaining"></span></paper-checkbox>
+								<paper-checkbox id="showTimeSpecificEventsBeforeAllDay" storage="showTimeSpecificEventsBeforeAllDay"><span msg="showTimeSpecificEventsBeforeAllDay"></span></paper-checkbox>
+								<paper-checkbox id="hideColonInTime" storage="hideColonInTime"><span msg="hideColonInTime"></span></paper-checkbox>
+							</div>
+		
+							<paper-checkbox id="showDayOnBadge" storage="showDayOnBadge"><span msg="showDayOnBadge"></span></paper-checkbox>
+							<div id="showDayOnBadgeOptions" class="layout vertical hide" style="margin-left:30px">
+								<paper-checkbox id="showDayOnBadgeExceptWhenMinutesLeft" storage="showDayOnBadgeExceptWhenMinutesLeft"><span msg="showDayOnBadgeExceptWhenMinutesLeft"></span></paper-checkbox>
+								<paper-checkbox id="showDayOnBadgeExceptWhenHoursLeft" storage="showDayOnBadgeExceptWhenHoursLeft"><span msg="showDayOnBadgeExceptWhenHoursLeft"></span></paper-checkbox>
+								<paper-checkbox id="showDayOnBadgeExceptWhenDaysLeft" storage="showDayOnBadgeExceptWhenDaysLeft"><span msg="showDayOnBadgeExceptWhenDaysLeft"></span></paper-checkbox>
+							</div>
+			  				
+			  				<paper-checkbox id="showButtonTooltip" storage="showButtonTooltip"><span msg="showButtonTooltip"></span></paper-checkbox>
+			  				<span style="color:gray;margin-top:10px">To exclude from notifications use the Notifications tab</span>
+			  				<paper-checkbox id="excludeRecurringEventsButtonIcon" storage="excludeRecurringEventsButtonIcon"><span msg="excludeRecurringEventsButtonIcon"></span></paper-checkbox>
+			  				<paper-checkbox id="excludeHiddenCalendarsFromButton" storage="excludeHiddenCalendarsFromButton"><span msg="excludeHiddenCalendarsFromButton"></span></paper-checkbox>
+			  				
+			  			</div>
+			  		
+			  		</neon-animatable>
+	
+			  		<neon-animatable value="widget">
+			  			
+					   	<div>Widget options:</div>
+				   		<br>
+						<div id="widgetOptions">
+						
+				  			<paper-dropdown-menu label="Cell width">
+							  	<paper-menu id="widgetWidth" class="dropdown-content" attr-for-selected="value" storage="widgetWidth">
+							  		<paper-item value="1">1</paper-item>
+							  		<paper-item value="2">2</paper-item>
+							  		<paper-item value="3">3</paper-item>
+							  		<paper-item value="4">4</paper-item>
+							  	</paper-menu>
+							</paper-dropdown-menu>
+
+				  			<paper-dropdown-menu label="Cell height">
+							  	<paper-menu id="widgetHeight" class="dropdown-content" attr-for-selected="value" storage="widgetHeight">
+							  		<paper-item value="1">1</paper-item>
+							  		<paper-item value="2">2</paper-item>
+							  		<paper-item value="3">3</paper-item>
+							  		<paper-item value="4">4</paper-item>
+							  	</paper-menu>
+							</paper-dropdown-menu>
+														
+						</div>
+			  			
+			  		</neon-animatable>
+			  		
+			  		<neon-animatable value="admin">
+			  		
+			  			<div class="layout vertical start">
+			  				<div>
+				   				<paper-button id="saveSyncOptions" raised><span msg="saveOptions">Save options</span></paper-button> or <paper-button id="loadSyncOptions" raised><span msg="loadOptions">Load options</span></paper-button> via signed in Chrome user
+			  				</div>
+			  			</div>
+			  			
+						<fieldset class="options selected">
+							<legend style="color:red;font-weight:bold;font-size:16px">WARNING: Do not use these settings unless your developer instructs you!</legend>
+							<div style="margin:10px 0">
+								<div>&bull; <a id="fetchCalendarSettings" href="#">Load Google Calendar settings into extension</a></div>
+								<div>&bull; <a id="clearData" href="#">Clear extension data</a></div>
+								<br>
+								<div><input type="checkbox" id="showConsoleMessages"> <label for='showConsoleMessages' msg="showConsoleMessages" msgToolTip="showConsoleMessagesTitle">showConsoleMessages</label></div>
+								<div id="testSection" style="display:none">
+									<div>
+										<a id="exportLocalStorage" style="vertical-align:top" href="#">Export localStorage</a> &bull; <a id="importLocalStorage" href="#">Import localStorage</a><br>
+										<textarea id="localStorageText" placeholder="[Paste LocalStorage JSON string here]" rows=5 style="margin-top:5px;width:400px"></textarea>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+			  			
+			  		</neon-animatable>
+			  	
+				</neon-animated-pages>
+			  	
+			</div>
+	  	</paper-header-panel>
+	  	
+		<template id="genericDialogTemplate">
+			<paper-dialog id="genericDialog" modal="true">
+				<h2>blah blah</h2>
+				<paper-dialog-scrollable class="dialogDescription">
+					blah
+				</paper-dialog-scrollable>
+				<div class="buttons">
+			  		<paper-button dialog-other class="otherDialog" hidden>empty</paper-button>
+			  		<paper-button dialog-dismiss class="cancelDialog"><span msg="cancel"></span></paper-button>
+			  		<paper-button dialog-confirm autofocus class="okDialog"><span msg="ok"></span></paper-button>
+			  	</div>
+			</paper-dialog>
+		</template>
+	
+		<template id="runInBackgroundDialogTemplate">
+			<paper-dialog id="runInBackgroundDialog" modal="true">
+				<h2>Run in background</h2>
+				<paper-dialog-scrollable class="dialogDescription">
+					<ol>
+						<li msg="runInBackgroundWarning1">Please read carefully aboutttt <a target="_blank" href="http://support.google.com/chrome/bin/answer.py?answer=1184722" msg="runInBackgroundWarning1b">background appssss</a></li>
+						<li msg="runInBackgroundWarning2">If you disabled background apps in Chrome you can reeeee-enable them by reading the <a target="_blank" href="http://support.google.com/chrome/bin/answer.py?answer=1184722" msg="runInBackgroundWarning2b">last clickable section</a></li>
+						<li msg="runInBackgroundWarning3">You might have to use theeee <a target="_blank" href="http://support.google.com/mail/bin/answer.py?answer=8494" msg="runInBackgroundWarning3b">stay signed innnn</a> from the Gmaillll login page</li>
+					</ol>
+				</paper-dialog-scrollable>
+				<div class="buttons">
+			  		<paper-button dialog-confirm autofocus class="okDialog"><span msg="ok"></span></paper-button>
+			  	</div>
+			</paper-dialog>
+		</template>
+	  	
+	 	<paper-toast id="processing" msgText="loading"><paper-spinner dir="ltr" active></paper-spinner></paper-toast>
+		<paper-toast id="message"><paper-icon-button class="closeToast" icon="close"></paper-icon-button></paper-toast>
+		<paper-toast id="error"><paper-button class="toastLink"></paper-button> <paper-icon-button class="closeToast" icon="close"></paper-icon-button></paper-toast>
+	  	
+	  	<input id="notificationSoundInputButton" type="file" accept="audio/*" hidden/>
+	</div>
+  	
+</body>
+
+</html>

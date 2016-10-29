@@ -1,0 +1,19 @@
+[Data Source]
+DisplayName=michaelthomson0797@gmail.com
+Enabled=false
+Parent=1477499508.1884.12@localhost
+
+[Mail Transport]
+BackendName=smtp
+
+[Authentication]
+Host=smtp.googlemail.com
+Method=Google
+Port=465
+ProxyUid=system-proxy
+RememberPassword=true
+User=michaelthomson0797@gmail.com
+CredentialName=
+
+[Security]
+Method=ssl-on-alternate-port
