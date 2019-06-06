@@ -66,15 +66,17 @@ fi
 ### Dotfiles
 ################################################################################
 
-# source zsh config
-read -p "set up shell? (y/n) " yesorno
-case $yesorno in
-    y)
-        touch $HOME/.zshrc
-        echo "source $DIR/zshrc" >> "$HOME/.zshrc"
-        ;;
-    *) echo "skipping shell setup"
-esac
+# link zshrc config
+if [ -e "$HOME/.zshrc" ]
+then
+    echo ".zshrc already exists. skipping..."
+else
+    read -p "set up $HOME/.zshrc? (y/n) " yesorno
+    case $yesorno in
+        y) ln -s "$DIR/zshrc" "$HOME/.zshrc" ;;
+        *) echo "skipping $HOME/.zshrc"
+    esac
+fi
 
 # link emacs config
 if [ -e "$HOME/.emacs.d" ]
@@ -95,7 +97,7 @@ then
 else
     read -p "set up $HOME/.vimrc? (y/n) " yesorno
     case $yesorno in
-        y) ln -ds "$DIR/vimrc" "$HOME/.vimrc" ;;
+        y) ln -s "$DIR/vimrc" "$HOME/.vimrc" ;;
         *) echo "skipping $HOME/.vimrc"
     esac
 fi
