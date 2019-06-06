@@ -1,4 +1,0 @@
-we moved the following to the /js/
-jquery
-jquery-custom
-moments 
