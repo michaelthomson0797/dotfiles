@@ -21,7 +21,7 @@
     ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
  '(package-selected-packages
    (quote
-    (org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
+    (magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -78,4 +78,3 @@
          ("C-x C-f" . helm-find-files)
          ("C-x b" . helm-buffers-list))
   :config(setq helm-mode-fuzzy-match t))
-         
