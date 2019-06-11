@@ -21,7 +21,7 @@
     ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
  '(package-selected-packages
    (quote
-    (magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
+    (company-irony elpy magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -61,7 +61,9 @@
   :config
   (org-display-inline-images t)
   (setq org-log-done 'time)
-  (setq org-image-actual-width nil))
+  (setq org-image-actual-width nil)
+  (setq org-todo-keywords
+        '((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELED"))))
 
 (use-package org-bullets
   :config
@@ -79,6 +81,19 @@
          ("C-x b" . helm-buffers-list))
   :config(setq helm-mode-fuzzy-match t))
 
-;; Robot Framework
-(load-file "./robot-mode/robot-mode.el")
-(add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
+;; Irony
+(use-package irony
+  :config
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+;; Company
+(use-package company
+  :init
+  (global-company-mode))
+
+(use-package company-irony
+  :config
+  (add-to-list 'company-backends 'company-irony))
