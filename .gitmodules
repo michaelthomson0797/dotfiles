@@ -1,0 +1,3 @@
+[submodule "emacs.d/robot-mode"]
+	path = emacs.d/robot-mode
+	url = https://github.com/sakari/robot-mode.git

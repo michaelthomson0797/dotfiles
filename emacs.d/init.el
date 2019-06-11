@@ -78,3 +78,7 @@
          ("C-x C-f" . helm-find-files)
          ("C-x b" . helm-buffers-list))
   :config(setq helm-mode-fuzzy-match t))
+
+;; Robot Framework
+(load-file "./robot-mode/robot-mode.el")
+(add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
