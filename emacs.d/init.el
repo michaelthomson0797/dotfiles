@@ -21,7 +21,7 @@
     ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
  '(package-selected-packages
    (quote
-    (company-irony elpy magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
+    (company irony company-irony elpy magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -81,6 +81,12 @@
          ("C-x b" . helm-buffers-list))
   :config(setq helm-mode-fuzzy-match t))
 
+;; Company
+(use-package company
+  :init
+  (global-company-mode))
+
+
 ;; Irony
 (use-package irony
   :config
@@ -88,11 +94,6 @@
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-
-;; Company
-(use-package company
-  :init
-  (global-company-mode))
 
 (use-package company-irony
   :config
