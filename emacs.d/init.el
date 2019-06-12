@@ -21,7 +21,7 @@
     ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
  '(package-selected-packages
    (quote
-    (company irony company-irony elpy magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
+    (evil-easymotion google-this company irony company-irony elpy magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -56,6 +56,10 @@
   :config
   (evil-mode 1))
 
+(use-package evil-easymotion
+  :config
+  (evilem-default-keybindings "SPC"))
+
 ;; org
 (use-package org
   :config
@@ -73,6 +77,13 @@
   :config
   (add-hook 'dired-mode-hook 'org-download-enable)
   (setq-default org-download-image-dir "./img"))
+
+;; google
+(use-package google-this
+  :bind
+  ("C-x g" . google-this)
+  :config
+  (google-this-mode 1))
 
 ;; Helm
 (use-package helm
