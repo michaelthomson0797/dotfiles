@@ -45,6 +45,14 @@
   (add-to-list 'default-frame-alist '(font . "Inconsolata-13" ))
   (set-face-attribute 'default t :font "Inconsolata-13"))
 
+;; Change autosave directory
+(setq auto-save-file-name-transforms
+      `((".*" ,"~/.emacs-backups")))
+
+;; Change backup directory
+(setq backup-directory-alist
+      `((".*" . ,"~/.emacs-backups")))
+
 ;; Theme
 (use-package color-theme-sanityinc-tomorrow
   :config
