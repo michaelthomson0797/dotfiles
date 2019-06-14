@@ -19,9 +19,12 @@
  '(custom-safe-themes
    (quote
     ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/jonah/jonah.org" "~/Dropbox/life/life.org")))
  '(package-selected-packages
    (quote
-    (evil-easymotion google-this company irony company-irony elpy magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
+    (gnuplot evil-easymotion google-this company irony company-irony elpy magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -85,6 +88,8 @@
   :config
   (add-hook 'dired-mode-hook 'org-download-enable)
   (setq-default org-download-image-dir "./img"))
+
+(use-package gnuplot)
 
 ;; google
 (use-package google-this
