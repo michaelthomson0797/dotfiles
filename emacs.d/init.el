@@ -218,4 +218,6 @@
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
 ;; Magit
-(use-package magit)
+(use-package magit
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status))
