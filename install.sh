@@ -25,7 +25,7 @@ case $yesorno in
 esac
 
 if [ $GUI -eq 1 ]; then
-    DEPENDENCIES+=(i3-gaps)
+    DEPENDENCIES+=(i3 xorg xorg-xinit rxvt-unicode xterm)
 fi
 
 # Installing dependencies
@@ -99,5 +99,29 @@ else
     case $yesorno in
         y) ln -s "$DIR/vimrc" "$HOME/.vimrc" ;;
         *) echo "skipping $HOME/.vimrc"
+    esac
+fi
+
+# link xinitrc config
+if [ -e "$HOME/.xinitrc" ]
+then
+    echo ".xinitrc already exists. skipping..."
+else
+    read -p "set up $HOME/.xinitrc? (y/n) " yesorno
+    case $yesorno in
+        y) ln -s "$DIR/xinitrc" "$HOME/.xinitrc" ;;
+        *) echo "skipping $HOME/.xinitrc"
+    esac
+fi
+
+# link Xresources config
+if [ -e "$HOME/.Xresources" ]
+then
+    echo ".Xresources already exists. skipping..."
+else
+    read -p "set up $HOME/.Xresources? (y/n) " yesorno
+    case $yesorno in
+        y) ln -s "$DIR/Xresources" "$HOME/.Xresources" ;;
+        *) echo "skipping $HOME/.Xresources"
     esac
 fi
