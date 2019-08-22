@@ -4,8 +4,7 @@
 
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")) (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -177,24 +176,24 @@
 ;; defines a list of accounts. account information entered before must also be included in the list
 ;; just delete this if you only use one account
 (defvar my-mu4e-account-alist
-  '((mu4e-acc1
-     (mu4e-drafts-folder (concat "/" mu4e-acc1 "/Drafts"))
-     (mu4e-sent-folder (concat "/" mu4e-acc1 "/Sent"))
-     (mu4e-trash-folder (concat "/" mu4e-acc1 "/Trash"))
-     (smtpmail-smtp-server mu4e-acc1-smtp-server)
-     (smtpmail-smtp-service mu4e-acc1-smtp-port)
-     (smtpmail-smtp-user mu4e-acc1-mail-address)
-     (user-mail-address mu4e-acc1-mail-address)
-     (user-full-name full-name))
-    (mu4e-acc2
-     (mu4e-drafts-folder (concat "/" mu4e-acc2 "/Drafts"))
-     (mu4e-sent-folder (concat "/" mu4e-acc2 "/Sent"))
-     (mu4e-trash-folder (concat "/" mu4e-acc2 "/Trash"))
-     (smtpmail-smtp-server mu4e-acc2-smtp-server)
-     (smtpmail-smtp-service mu4e-acc2-smtp-port)
-     (smtpmail-smtp-user mu4e-acc2-mail-address)
-     (user-mail-address mu4e-acc2-mail-address)
-     (user-full-name full-name))))
+  `((,mu4e-acc1
+     (mu4e-drafts-folder ,(concat "/" mu4e-acc1 "/Drafts"))
+     (mu4e-sent-folder ,(concat "/" mu4e-acc1 "/Sent"))
+     (mu4e-trash-folder ,(concat "/" mu4e-acc1 "/Trash"))
+     (smtpmail-smtp-server ,mu4e-acc1-smtp-server)
+     (smtpmail-smtp-service ,mu4e-acc1-smtp-port)
+     (smtpmail-smtp-user ,mu4e-acc1-mail-address)
+     (user-mail-address ,mu4e-acc1-mail-address)
+     (user-full-name ,full-name))
+    (,mu4e-acc2
+     (mu4e-drafts-folder ,(concat "/" mu4e-acc2 "/Drafts"))
+     (mu4e-sent-folder ,(concat "/" mu4e-acc2 "/Sent"))
+     (mu4e-trash-folder ,(concat "/" mu4e-acc2 "/Trash"))
+     (smtpmail-smtp-server ,mu4e-acc2-smtp-server)
+     (smtpmail-smtp-service ,mu4e-acc2-smtp-port)
+     (smtpmail-smtp-user ,mu4e-acc2-mail-address)
+     (user-mail-address ,mu4e-acc2-mail-address)
+     (user-full-name ,full-name))))
 
 ;; When composing a message, ask the user which account to use with tab-completion
 (defun my-mu4e-set-account ()
@@ -217,3 +216,6 @@
       (error "No email account found"))))
 
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+
+;; Magit
+(use-package magit)
