@@ -1,4 +1,6 @@
 export TERM=xterm-256color
+export PATH=/home/mthomson/.local/bin:$PATH
+export BROWSER=qutebrowser
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000

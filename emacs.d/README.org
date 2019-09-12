@@ -1,0 +1,223 @@
+* Essentials
+** Package Manager
+   #+begin_src emacs-lisp :tangle yes
+     (require 'package)
+     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+     (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")) (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+     (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+     (setq package-enable-at-startup nil)
+     (package-initialize)
+     (setq package-check-signature nil)
+
+     (unless (package-installed-p 'use-package)
+     (package-refresh-contents)
+     (package-install 'use-package))
+     (require 'use-package)
+     (setq use-package-always-ensure t)
+   #+end_src
+** Essential Settings
+*** Misc Settings
+    #+begin_src emacs-lisp :tangle yes
+      (setq inhibit-splash-screen t
+            inhibit-startup-message t
+            inhibit-startup-echo-area-message "wolfe")
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)
+      (menu-bar-mode -1)
+      (show-paren-mode t)
+      (setq initial-scratch-message "")
+      (fset 'yes-or-no-p 'y-or-n-p)
+      (setq-default indent-tabs-mode nil)
+      (delete-selection-mode 1)
+      (when (member "Inconsolata" (font-family-list))
+        (add-to-list 'default-frame-alist '(font . "Inconsolata-13" ))
+        (set-face-attribute 'default t :font "Inconsolata-13"))
+    #+end_src
+*** Autosave & Backup
+    #+begin_src emacs-lisp :tangle yes
+      (setq auto-save-file-name-transforms
+            `((".*" ,"~/.emacs-backups")))
+
+      (setq backup-directory-alist
+            `((".*" . ,"~/.emacs-backups")))
+    #+end_src
+*** Default Programs
+    #+begin_src emacs-lisp :tangle yes
+      ;; Change default browser
+      (setq browse-url-browser-function 'browse-url-generic)
+      (setq browse-url-generic-program "qutebrowser")
+    #+end_src
+*** Theme
+    #+begin_src emacs-lisp :tangle yes
+      (use-package color-theme-sanityinc-tomorrow
+        :config
+        (load-theme 'sanityinc-tomorrow-bright t))
+    #+end_src
+* Evil
+** Base Config
+   #+begin_src emacs-lisp :tangle yes
+     (use-package evil
+       :init ()
+       :config
+       (evil-mode 1))
+   #+end_src
+* Org
+** Base Config
+   #+begin_src emacs-lisp :tangle yes
+     (org-display-inline-images t)
+     (setq org-log-done 'time)
+     (setq org-image-actual-width nil)
+     (setq org-todo-keywords
+           '((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELED")))
+
+     ;; language support for org
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((python . t)
+        (haskell . t)))
+   #+end_src
+** Org Bullets
+   #+begin_src emacs-lisp :tangle yes
+     (use-package org-bullets
+       :config
+       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+   #+end_src
+** Org Download
+   #+begin_src emacs-lisp :tangle yes
+     ;; allows for drag and drop images
+     (use-package org-download
+       :config
+       (add-hook 'dired-mode-hook 'org-download-enable)
+       (setq-default org-download-image-dir "./img"))
+   #+end_src
+* Mail (mu4e)
+  #+begin_src emacs-lisp :tangle yes
+    (require 'mu4e)
+
+    ;; set mail directory. this must match the maildir of your .offlineimaprc
+    (setq mu4e-maildir (expand-file-name "~/Maildir"))
+    (setq mu4e-view-show-images t)
+    (setq mu4e-sent-messages-behavior 'sent)
+    (setq message-send-mail-function 'smtpmail-send-it)
+    (setq mu4e-update-interval 300)
+
+    ;; set "main" account information.
+    (setq mu4e-drafts-folder (concat "/" mu4e-acc1 "/Drafts")
+          mu4e-sent-folder (concat "/" mu4e-acc1 "/Sent")
+          mu4e-trash-folder (concat "/" mu4e-acc1 "/Trash")
+          mu4e-get-mail-command "offlineimap"
+          smtpmail-stream-type 'starttls
+          smtpmail-smtp-server mu4e-acc1-smtp-server
+          smtpmail-smtp-service mu4e-acc1-smtp-port
+          smtpmail-smtp-user mu4e-acc1-mail-address
+          user-mail-address mu4e-acc1-mail-address
+          user-full-name full-name)
+
+    ;; defines a list of accounts. account information entered before must also be included in the list
+    ;; just delete this if you only use one account
+    (defvar my-mu4e-account-alist
+      `((,mu4e-acc1
+         (mu4e-drafts-folder ,(concat "/" mu4e-acc1 "/Drafts"))
+         (mu4e-sent-folder ,(concat "/" mu4e-acc1 "/Sent"))
+         (mu4e-trash-folder ,(concat "/" mu4e-acc1 "/Trash"))
+         (smtpmail-smtp-server ,mu4e-acc1-smtp-server)
+         (smtpmail-smtp-service ,mu4e-acc1-smtp-port)
+         (smtpmail-smtp-user ,mu4e-acc1-mail-address)
+         (user-mail-address ,mu4e-acc1-mail-address)
+         (user-full-name ,full-name))
+        (,mu4e-acc2
+         (mu4e-drafts-folder ,(concat "/" mu4e-acc2 "/Drafts"))
+         (mu4e-sent-folder ,(concat "/" mu4e-acc2 "/Sent"))
+         (mu4e-trash-folder ,(concat "/" mu4e-acc2 "/Trash"))
+         (smtpmail-smtp-server ,mu4e-acc2-smtp-server)
+         (smtpmail-smtp-service ,mu4e-acc2-smtp-port)
+         (smtpmail-smtp-user ,mu4e-acc2-mail-address)
+         (user-mail-address ,mu4e-acc2-mail-address)
+         (user-full-name ,full-name))))
+
+    ;; When composing a message, ask the user which account to use with tab-completion
+    (defun my-mu4e-set-account ()
+      "Set the account for composing a message."
+      (let* ((account
+              (if mu4e-compose-parent-message
+                  (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
+                    (string-match "/\\(.*?\\)/" maildir)
+                    (match-string 1 maildir))
+                (completing-read (format "Compose with account: (%s) "
+                                         (mapconcat #'(lambda (var) (car var))
+                                                    my-mu4e-account-alist "/"))
+                                 (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+                                 nil t nil nil (caar my-mu4e-account-alist))))
+             (account-vars (cdr (assoc account my-mu4e-account-alist))))
+        (if account-vars
+            (mapc #'(lambda (var)
+                      (set (car var) (cadr var)))
+                  account-vars)
+          (error "No email account found"))))
+
+    (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+
+    ;; mu4e alerts
+    (use-package mu4e-alert
+      :config
+      (mu4e-alert-set-default-style 'notifications)
+      (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+      (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
+  #+end_src
+* Packages
+  [[https://github.com/emacs-helm/helm][Helm]]: A useful fuzzy search framework
+  #+begin_src emacs-lisp :tangle yes
+    (use-package helm
+      :bind (("M-x" . helm-M-x)
+             ("C-x C-f" . helm-find-files)
+             ("C-x b" . helm-buffers-list))
+      :config(setq helm-mode-fuzzy-match t))
+  #+end_src
+
+  [[http://company-mode.github.io/][Company]]: An autocompletion framework
+  #+begin_src emacs-lisp :tangle yes
+    (use-package company
+      :init
+      (global-company-mode))
+  #+end_src
+
+  [[http://company-mode.github.io/][Magit]]: A Git Porcelain inside emacs
+  #+begin_src emacs-lisp :tangle yes
+    ;; Magit
+    (use-package magit
+      :config
+      (global-set-key (kbd "C-x g") 'magit-status))
+  #+end_src
+* Language Support
+** C/C++
+  #+begin_src emacs-lisp :tangle yes
+    (use-package irony
+      :config
+      (add-hook 'c++-mode-hook 'irony-mode)
+      (add-hook 'c-mode-hook 'irony-mode)
+      (add-hook 'objc-mode-hook 'irony-mode)
+      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+    (use-package company-irony
+      :config
+      (add-to-list 'company-backends 'company-irony))
+  #+end_src
+** Python
+  #+begin_src emacs-lisp :tangle yes
+    (use-package jedi
+      :config
+      (add-hook 'python-mode-hook 'jedi:setup))
+  #+end_src
+** Robot Framework
+  #+begin_src emacs-lisp :tangle yes
+    (load-file "~/.emacs.d/robot-mode/robot-mode.el")
+    (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
+  #+end_src
+** Haskell
+  #+begin_src emacs-lisp :tangle yes
+    ;; haskell
+    (use-package haskell-mode)
+    (require 'haskell-interactive-mode)
+    (require 'haskell-process)
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  #+end_src
