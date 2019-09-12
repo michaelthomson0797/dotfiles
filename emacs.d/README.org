@@ -188,9 +188,17 @@
       :config
       (global-set-key (kbd "C-x g") 'magit-status))
   #+end_src
+
+  [[https://github.com/flycheck/flycheck][Flycheck]]: Syntax Checking
+  #+begin_src emacs-lisp :tangle yes
+    (use-package flycheck
+      :ensure t
+      :init (global-flycheck-mode))
+  #+end_src
 * Language Support
 ** C/C++
   #+begin_src emacs-lisp :tangle yes
+    (use-package helm-gtags)
     (use-package irony
       :config
       (add-hook 'c++-mode-hook 'irony-mode)
@@ -201,6 +209,10 @@
     (use-package company-irony
       :config
       (add-to-list 'company-backends 'company-irony))
+
+    (use-package flycheck-irony
+      :config
+      (add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
   #+end_src
 ** Python
   #+begin_src emacs-lisp :tangle yes
