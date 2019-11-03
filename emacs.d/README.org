@@ -90,80 +90,6 @@
        (add-hook 'dired-mode-hook 'org-download-enable)
        (setq-default org-download-image-dir "./img"))
    #+end_src
-* Mail (mu4e)
-  #+begin_src emacs-lisp :tangle yes
-    (require 'mu4e)
-
-    ;; set mail directory. this must match the maildir of your .offlineimaprc
-    (setq mu4e-maildir (expand-file-name "~/Maildir"))
-    (setq mu4e-view-show-images t)
-    (setq mu4e-sent-messages-behavior 'sent)
-    (setq message-send-mail-function 'smtpmail-send-it)
-    (setq mu4e-update-interval 300)
-
-    ;; set "main" account information.
-    (setq mu4e-drafts-folder (concat "/" mu4e-acc1 "/Drafts")
-          mu4e-sent-folder (concat "/" mu4e-acc1 "/Sent")
-          mu4e-trash-folder (concat "/" mu4e-acc1 "/Trash")
-          mu4e-get-mail-command "offlineimap"
-          smtpmail-stream-type 'starttls
-          smtpmail-smtp-server mu4e-acc1-smtp-server
-          smtpmail-smtp-service mu4e-acc1-smtp-port
-          smtpmail-smtp-user mu4e-acc1-mail-address
-          user-mail-address mu4e-acc1-mail-address
-          user-full-name full-name)
-
-    ;; defines a list of accounts. account information entered before must also be included in the list
-    ;; just delete this if you only use one account
-    (defvar my-mu4e-account-alist
-      `((,mu4e-acc1
-         (mu4e-drafts-folder ,(concat "/" mu4e-acc1 "/Drafts"))
-         (mu4e-sent-folder ,(concat "/" mu4e-acc1 "/Sent"))
-         (mu4e-trash-folder ,(concat "/" mu4e-acc1 "/Trash"))
-         (smtpmail-smtp-server ,mu4e-acc1-smtp-server)
-         (smtpmail-smtp-service ,mu4e-acc1-smtp-port)
-         (smtpmail-smtp-user ,mu4e-acc1-mail-address)
-         (user-mail-address ,mu4e-acc1-mail-address)
-         (user-full-name ,full-name))
-        (,mu4e-acc2
-         (mu4e-drafts-folder ,(concat "/" mu4e-acc2 "/Drafts"))
-         (mu4e-sent-folder ,(concat "/" mu4e-acc2 "/Sent"))
-         (mu4e-trash-folder ,(concat "/" mu4e-acc2 "/Trash"))
-         (smtpmail-smtp-server ,mu4e-acc2-smtp-server)
-         (smtpmail-smtp-service ,mu4e-acc2-smtp-port)
-         (smtpmail-smtp-user ,mu4e-acc2-mail-address)
-         (user-mail-address ,mu4e-acc2-mail-address)
-         (user-full-name ,full-name))))
-
-    ;; When composing a message, ask the user which account to use with tab-completion
-    (defun my-mu4e-set-account ()
-      "Set the account for composing a message."
-      (let* ((account
-              (if mu4e-compose-parent-message
-                  (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
-                    (string-match "/\\(.*?\\)/" maildir)
-                    (match-string 1 maildir))
-                (completing-read (format "Compose with account: (%s) "
-                                         (mapconcat #'(lambda (var) (car var))
-                                                    my-mu4e-account-alist "/"))
-                                 (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
-                                 nil t nil nil (caar my-mu4e-account-alist))))
-             (account-vars (cdr (assoc account my-mu4e-account-alist))))
-        (if account-vars
-            (mapc #'(lambda (var)
-                      (set (car var) (cadr var)))
-                  account-vars)
-          (error "No email account found"))))
-
-    (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
-
-    ;; mu4e alerts
-    (use-package mu4e-alert
-      :config
-      (mu4e-alert-set-default-style 'notifications)
-      (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-      (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display))
-  #+end_src
 * Packages
   [[https://github.com/emacs-helm/helm][Helm]]: A useful fuzzy search framework
   #+begin_src emacs-lisp :tangle yes
@@ -220,16 +146,11 @@
       :config
       (add-hook 'python-mode-hook 'jedi:setup))
   #+end_src
-** Robot Framework
-  #+begin_src emacs-lisp :tangle yes
-    (load-file "~/.emacs.d/robot-mode/robot-mode.el")
-    (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
-  #+end_src
 ** Haskell
   #+begin_src emacs-lisp :tangle yes
     ;; haskell
     (use-package haskell-mode)
-    (require 'haskell-interactive-mode)
-    (require 'haskell-process)
-    (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+    (use-package intero
+      :config
+      (add-hook 'haskell-mode-hook 'intero-mode))
   #+end_src
