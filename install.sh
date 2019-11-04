@@ -125,3 +125,9 @@ else
         *) echo "skipping $HOME/.Xresources"
     esac
 fi
+
+read -p "install stack? (y/n) " yesorno
+case $yesorno in
+    y) wget -qO- https://get.haskellstack.org/ | sh ;;
+    *) echo "skipping stack installation"
+esac
