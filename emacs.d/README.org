@@ -104,7 +104,13 @@
   #+begin_src emacs-lisp :tangle yes
     (use-package company
       :init
-      (global-company-mode))
+      (global-company-mode)
+      :config
+      (setq company-minimum-prefix-length 1))
+
+    (use-package company-quickhelp
+      :init
+      (company-quickhelp-mode))
   #+end_src
 
   [[http://company-mode.github.io/][Magit]]: A Git Porcelain inside emacs
@@ -120,6 +126,13 @@
     (use-package flycheck
       :ensure t
       :init (global-flycheck-mode))
+  #+end_src
+
+  [[https://github.com/politza/pdf-tools][pdf-tools]]: a replacement for docview
+  #+begin_src emacs-lisp :tangle yes
+    (use-package pdf-tools
+      :init
+      (pdf-tools-install))
   #+end_src
 * Language Support
 ** C/C++
