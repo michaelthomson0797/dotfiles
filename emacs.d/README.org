@@ -119,6 +119,9 @@
     (use-package magit
       :config
       (global-set-key (kbd "C-x g") 'magit-status))
+
+    ;; evil-magit
+    (use-package evil-magit)
   #+end_src
 
   [[https://github.com/flycheck/flycheck][Flycheck]]: Syntax Checking
