@@ -7,7 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ARCH_DEPENDENCIES=
 DEBIAN_DEPENDENCIES=
-DEPENDENCIES=(zsh bash emacs vim git cmake llvm clang wget)
+DEPENDENCIES=(zsh bash emacs vim git cmake llvm clang wget ttf-hack)
 
 ################################################################################
 ### GUI and Shell

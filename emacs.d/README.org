@@ -29,9 +29,9 @@
       (fset 'yes-or-no-p 'y-or-n-p)
       (setq-default indent-tabs-mode nil)
       (delete-selection-mode 1)
-      (when (member "Inconsolata" (font-family-list))
-        (add-to-list 'default-frame-alist '(font . "Inconsolata-13" ))
-        (set-face-attribute 'default t :font "Inconsolata-13"))
+      (when (member "Hack" (font-family-list))
+        (add-to-list 'default-frame-alist '(font . "Hack-10" ))
+        (set-face-attribute 'default t :font "Hack-10"))
     #+end_src
 *** Autosave & Backup
     #+begin_src emacs-lisp :tangle yes
@@ -45,13 +45,14 @@
     #+begin_src emacs-lisp :tangle yes
       ;; Change default browser
       (setq browse-url-browser-function 'browse-url-generic)
-      (setq browse-url-generic-program "qutebrowser")
+      (setq browse-url-generic-program "chromium")
     #+end_src
 *** Theme
     #+begin_src emacs-lisp :tangle yes
-      (use-package color-theme-sanityinc-tomorrow
-        :config
-        (load-theme 'sanityinc-tomorrow-bright t))
+      (use-package spacemacs-theme
+        :defer t
+        :init
+        (load-theme 'spacemacs-dark t))
     #+end_src
 * Evil
 ** Base Config
@@ -238,9 +239,10 @@
   #+end_src
 ** Python
   #+begin_src emacs-lisp :tangle yes
-    (use-package jedi
-      :config
-      (add-hook 'python-mode-hook 'jedi:setup))
+    (use-package elpy
+      :ensure t
+      :init
+      (elpy-enable))
   #+end_src
 ** Haskell
   #+begin_src emacs-lisp :tangle yes
