@@ -3,3 +3,4 @@ emacs.d/*
 !emacs.d/robot-mode
 !emacs.d/README.org
 !emacs.d/submodules
+!emacs.d/lisp

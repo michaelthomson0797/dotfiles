@@ -44,15 +44,37 @@
 *** Default Programs
     #+begin_src emacs-lisp :tangle yes
       ;; Change default browser
-      (setq browse-url-browser-function 'browse-url-generic)
-      (setq browse-url-generic-program "chromium")
+      (setq browse-url-browser-function 'eaf-open-browser)
+      (defalias 'browse-web #'eaf-open-browser)
     #+end_src
 *** Theme
     #+begin_src emacs-lisp :tangle yes
-      (use-package spacemacs-theme
-        :defer t
-        :init
-        (load-theme 'spacemacs-dark t))
+      (use-package doom-themes
+        :config
+        ;; Global settings (defaults)
+        (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+              doom-themes-enable-italic t) ; if nil, italics is universally disabled
+        (load-theme 'doom-one t)
+
+        ;; Enable flashing mode-line on errors
+        (doom-themes-visual-bell-config)
+
+        ;; neotree
+        (doom-themes-neotree-config)
+
+        ;; or for treemacs users
+        (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+        (doom-themes-treemacs-config)
+
+        ;; Corrects (and improves) org-mode's native fontification.
+        (doom-themes-org-config))
+
+      (use-package doom-modeline
+        :ensure t
+        :hook (after-init . doom-modeline-mode)
+        :config
+        (setq doom-modeline-minor-modes t)
+        (setq doom-modeline-modal-icon t))
     #+end_src
 * Evil
 ** Base Config
@@ -77,6 +99,9 @@
       'org-babel-load-languages
       '((python . t)
         (haskell . t)))
+
+     ;; org agenda
+     (setq org-agenda-files (list "~/Dropbox/everything.org"))
    #+end_src
 ** Org Bullets
    #+begin_src emacs-lisp :tangle yes
@@ -140,11 +165,26 @@
       :init (global-flycheck-mode))
   #+end_src
 
-  [[https://github.com/politza/pdf-tools][pdf-tools]]: a replacement for docview
+  all-the-icons
   #+begin_src emacs-lisp :tangle yes
-    (use-package pdf-tools
-      :init
-      (pdf-tools-install))
+    (use-package all-the-icons)
+  #+end_src
+
+  Neotree
+  #+begin_src emacs-lisp :tangle yes
+    (use-package neotree
+      :ensure t
+      :config
+      (global-set-key [f8] 'neotree-toggle)
+      (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+      (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+      (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+      (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+      (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+      (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+      (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+      (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+      (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle))
   #+end_src
 
   [[https://github.com/jaypei/emacs-neotree][NeoTree]]: in-frame file browser similar to NERDTree
@@ -259,4 +299,9 @@
     (use-package intero
       :config
       (add-hook 'haskell-mode-hook 'intero-mode))
+  #+end_src
+* Fun
+  snow.el
+  #+begin_src emacs-lisp :tangle yes
+    (load "~/.emacs.d/lisp/snow.el")
   #+end_src

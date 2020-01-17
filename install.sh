@@ -137,7 +137,7 @@ esac
 read -p "set up eaf (emacs application framework)? (y/n)" yesorno
 case $yesorno in
     y) curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-       python get-pip.py
+       sudo python get-pip.py
        sudo pip3 install dbus-python python-xlib pyqt5 pyqtwebengine pymupdf grip qrcode feedparser
        ;;
     *) echo "skipping eaf setup"

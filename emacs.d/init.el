@@ -20,7 +20,7 @@
  '(custom-safe-themes
    (quote
     ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
- '(org-agenda-files (quote ("~/Dropbox/jonah/jonah.org")))
+ '(org-agenda-files (quote ("~/Dropbox/everything.org")))
  '(package-selected-packages
    (quote
     (jedi mu4e-alert xkcd helm-spotify ace-window haskell-mode mu4e mu gnuplot evil-easymotion google-this company irony company-irony elpy magit org-download slack helm evil org-bullets color-theme-sanityinc-tomorrow doom-themes use-package)))
