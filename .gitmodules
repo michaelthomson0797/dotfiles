@@ -1,3 +1,6 @@
 [submodule "emacs.d/robot-mode"]
 	path = emacs.d/robot-mode
 	url = https://github.com/sakari/robot-mode.git
+[submodule "emacs.d/submodules/emacs-application-framework"]
+	path = emacs.d/submodules/emacs-application-framework
+	url = https://github.com/manateelazycat/emacs-application-framework.git

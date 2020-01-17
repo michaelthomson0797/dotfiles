@@ -2,3 +2,4 @@ emacs.d/*
 !emacs.d/init.el
 !emacs.d/robot-mode
 !emacs.d/README.org
+!emacs.d/submodules
