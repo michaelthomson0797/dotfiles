@@ -7,7 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ARCH_DEPENDENCIES=
 DEBIAN_DEPENDENCIES=
-DEPENDENCIES=(zsh bash emacs vim git cmake llvm clang wget ttf-hack python)
+DEPENDENCIES=(zsh bash emacs vim git cmake llvm clang wget ttf-hack)
 
 ################################################################################
 ### GUI and Shell
@@ -131,14 +131,4 @@ read -p "install stack? (y/n) " yesorno
 case $yesorno in
     y) wget -qO- https://get.haskellstack.org/ | sh ;;
     *) echo "skipping stack installation"
-esac
-
-# set up eaf (emacs application framework)
-read -p "set up eaf (emacs application framework)? (y/n)" yesorno
-case $yesorno in
-    y) curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-       sudo python get-pip.py
-       sudo pip3 install dbus-python python-xlib pyqt5 pyqtwebengine pymupdf grip qrcode feedparser
-       ;;
-    *) echo "skipping eaf setup"
 esac

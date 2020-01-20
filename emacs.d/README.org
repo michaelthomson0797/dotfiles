@@ -82,8 +82,7 @@
      (use-package evil
        :init ()
        :config
-       (evil-mode 1)
-       (add-to-list 'evil-emacs-state-modes 'eaf-mode))
+       (evil-mode 1))
    #+end_src
 * Org
 ** Base Config
@@ -117,13 +116,6 @@
        (add-hook 'dired-mode-hook 'org-download-enable)
        (setq-default org-download-image-dir "./img"))
    #+end_src
-* EAF
-  #+begin_src emacs-lisp :tangle yes
-    (use-package eaf
-      :load-path "~/.emacs.d/submodules/emacs-application-framework")
-
-    (use-package htmlize)
-  #+end_src
 * Packages
   [[https://github.com/emacs-helm/helm][Helm]]: A useful fuzzy search framework
   #+begin_src emacs-lisp :tangle yes
