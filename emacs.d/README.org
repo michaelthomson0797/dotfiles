@@ -82,7 +82,10 @@
      (use-package evil
        :init ()
        :config
-       (evil-mode 1))
+       (evil-mode 1)
+       (setq evil-want-C-i-jump nil)
+       (evil-define-key 'normal csharp-mode-map
+         "gd" 'omnisharp-go-to-definition))
    #+end_src
 * Org
 ** Base Config
@@ -291,6 +294,15 @@
     (use-package intero
       :config
       (add-hook 'haskell-mode-hook 'intero-mode))
+  #+end_src
+** C#
+  #+begin_src emacs-lisp :tangle yes
+    ;; haskell
+    (use-package omnisharp
+      :config
+      (add-hook 'csharp-mode-hook 'omnisharp-mode)
+      (add-to-list 'company-backends 'company-omnisharp)
+      (add-hook 'csharp-mode-hook #'flycheck-mode))
   #+end_src
 * Fun
   snow.el
