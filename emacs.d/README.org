@@ -44,8 +44,7 @@
 *** Default Programs
     #+begin_src emacs-lisp :tangle yes
       ;; Change default browser
-      (setq browse-url-browser-function 'eaf-open-browser)
-      (defalias 'browse-web #'eaf-open-browser)
+      (setq browse-url-browser-function 'browse-url-chromium)
     #+end_src
 *** Theme
     #+begin_src emacs-lisp :tangle yes
@@ -87,6 +86,20 @@
        (evil-define-key 'normal csharp-mode-map
          "gd" 'omnisharp-go-to-definition))
    #+end_src
+** Evil Org Mode
+   #+begin_src emacs-lisp :tangle yes
+     (use-package evil-org
+       :ensure t
+       :after org
+       :config
+       (add-hook 'org-mode-hook 'evil-org-mode)
+       (add-hook 'evil-org-mode-hook
+                 (lambda ()
+                   (evil-org-set-key-theme)))
+       (require 'evil-org-agenda)
+       (evil-org-agenda-set-keys))
+   #+end_src
+
 * Org
 ** Base Config
    #+begin_src emacs-lisp :tangle yes
@@ -260,6 +273,23 @@
     (use-package treemacs-magit
       :after treemacs magit
       :ensure t)
+  #+end_src
+  
+  [[https://github.com/politza/pdf-tools][pdf-tools]]
+  #+begin_src emacs-lisp :tangle yes
+    (use-package pdf-tools
+      :ensure t
+      :config
+      (pdf-tools-install))
+  #+end_src
+  
+  [[https://github.com/xcodebuild/nlinum-relative][nlinum-relative]]
+  #+begin_src emacs-lisp :tangle yes
+    (use-package nlinum-relative
+      :config
+      ;; something else you want
+      (nlinum-relative-setup-evil)
+      (add-hook 'prog-mode-hook 'nlinum-relative-mode))
   #+end_src
 * Language Support
 ** C/C++
