@@ -334,6 +334,19 @@
       (add-to-list 'company-backends 'company-omnisharp)
       (add-hook 'csharp-mode-hook #'flycheck-mode))
   #+end_src
+** Java
+  #+begin_src emacs-lisp :tangle yes
+    (use-package lsp-java
+      :config
+      (add-hook 'java-mode-hook #'lsp))
+
+    (use-package company-lsp
+      :config
+      (push 'company-lsp company-backends))
+
+    (use-package lsp-ui)
+    (use-package helm-lsp)
+  #+end_src
 * Fun
   snow.el
   #+begin_src emacs-lisp :tangle yes
