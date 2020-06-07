@@ -79,12 +79,16 @@
 ** Base Config
    #+begin_src emacs-lisp :tangle yes
      (use-package evil
-       :init ()
+       :init 
+       (setq evil-want-keybinding nil)
        :config
-       (evil-mode 1)
-       (setq evil-want-C-i-jump nil)
-       (evil-define-key 'normal csharp-mode-map
-         "gd" 'omnisharp-go-to-definition))
+       (evil-mode 1))
+
+     (use-package evil-collection
+       :after evil
+       :ensure t
+       :config
+       (evil-collection-init))
    #+end_src
 ** Evil Org Mode
    #+begin_src emacs-lisp :tangle yes
@@ -109,12 +113,6 @@
      (setq org-todo-keywords
            '((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELED")))
 
-     ;; language support for org
-     (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((python . t)
-        (haskell . t)))
-
      ;; org agenda
      (setq org-agenda-files (list "~/Dropbox/everything.org"))
    #+end_src
@@ -124,14 +122,6 @@
        :config
        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
    #+end_src
-** Org Download
-   #+begin_src emacs-lisp :tangle yes
-     ;; allows for drag and drop images
-     (use-package org-download
-       :config
-       (add-hook 'dired-mode-hook 'org-download-enable)
-       (setq-default org-download-image-dir "./img"))
-   #+end_src
 * Packages
   [[https://github.com/emacs-helm/helm][Helm]]: A useful fuzzy search framework
   #+begin_src emacs-lisp :tangle yes
@@ -140,6 +130,20 @@
              ("C-x C-f" . helm-find-files)
              ("C-x b" . helm-buffers-list))
       :config(setq helm-mode-fuzzy-match t))
+
+    (use-package helm-ls-git
+      :bind (("C-x C-d" . helm-browse-project)
+             ("C-x r p" . helm-projects-history)))
+  #+end_src
+  
+  [[[[https://docs.projectile.mx/projectile/installation.html][Projectile]]: Project interaction framework
+  #+begin_src emacs-lisp :tangle yes
+    (use-package projectile
+      :ensure t
+      :config
+      (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+      (projectile-mode +1))
   #+end_src
 
   [[http://company-mode.github.io/][Company]]: An autocompletion framework
@@ -148,7 +152,8 @@
       :init
       (global-company-mode)
       :config
-      (setq company-minimum-prefix-length 1))
+      (setq company-minimum-prefix-length 1)
+      (setq company-idle-delay 0.0))
 
     (use-package company-quickhelp
       :init
@@ -180,22 +185,10 @@
 
   Neotree
   #+begin_src emacs-lisp :tangle yes
-    (use-package neotree
-      :ensure t
-      :config
-      (global-set-key [f8] 'neotree-toggle)
-      (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-      (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-      (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-      (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-      (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
-      (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-      (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-      (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-      (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle))
+    (use-package neotree)
   #+end_src
 
-  [[https://github.com/jaypei/emacs-neotree][NeoTree]]: in-frame file browser similar to NERDTree
+  Treemacs: in-frame file browser similar to NERDTree
   #+begin_src emacs-lisp :tangle yes
     (use-package treemacs
       :ensure t
@@ -265,6 +258,10 @@
       :after treemacs evil
       :ensure t)
 
+    (use-package treemacs-projectile
+      :after treemacs projectile
+      :ensure t)
+
     (use-package treemacs-icons-dired
       :after treemacs dired
       :ensure t
@@ -273,14 +270,6 @@
     (use-package treemacs-magit
       :after treemacs magit
       :ensure t)
-  #+end_src
-  
-  [[https://github.com/politza/pdf-tools][pdf-tools]]
-  #+begin_src emacs-lisp :tangle yes
-    (use-package pdf-tools
-      :ensure t
-      :config
-      (pdf-tools-install))
   #+end_src
   
   [[https://github.com/xcodebuild/nlinum-relative][nlinum-relative]]
@@ -292,63 +281,37 @@
       (add-hook 'prog-mode-hook 'nlinum-relative-mode))
   #+end_src
 * Language Support
-** C/C++
-  #+begin_src emacs-lisp :tangle yes
-    (use-package helm-gtags)
-    (use-package irony
-      :config
-      (add-hook 'c++-mode-hook 'irony-mode)
-      (add-hook 'c-mode-hook 'irony-mode)
-      (add-hook 'objc-mode-hook 'irony-mode)
-      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+** LSP
+   #+begin_src emacs-lisp :tangle yes
+     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+     (setq lsp-keymap-prefix "C-l")
 
-    (use-package company-irony
-      :config
-      (add-to-list 'company-backends 'company-irony))
+     (use-package lsp-mode
+         :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+                (java-mode . lsp)
+                (haskell-mode . lsp)
+                (rust-mode . lsp)
+                (c-mode . lsp)
+                (js-mode . lsp)
+                (typescript-mode . lsp))
+         :commands lsp)
 
-    (use-package flycheck-irony
-      :config
-      (add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
-  #+end_src
-** Python
-  #+begin_src emacs-lisp :tangle yes
-    (use-package elpy
-      :ensure t
-      :init
-      (elpy-enable))
-  #+end_src
-** Haskell
-  #+begin_src emacs-lisp :tangle yes
-    ;; haskell
-    (use-package haskell-mode)
-    (use-package intero
-      :config
-      (add-hook 'haskell-mode-hook 'intero-mode))
-  #+end_src
-** C#
-  #+begin_src emacs-lisp :tangle yes
-    ;; haskell
-    (use-package omnisharp
-      :config
-      (add-hook 'csharp-mode-hook 'omnisharp-mode)
-      (add-to-list 'company-backends 'company-omnisharp)
-      (add-hook 'csharp-mode-hook #'flycheck-mode))
-  #+end_src
-** Java
-  #+begin_src emacs-lisp :tangle yes
-    (use-package lsp-java
-      :config
-      (add-hook 'java-mode-hook #'lsp))
+     ;; optionally
+     (use-package lsp-ui :commands lsp-ui-mode)
+     ;; if you are helm user
+     (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+     (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-    (use-package company-lsp
-      :config
-      (push 'company-lsp company-backends))
+     ;; performance tuning
+     (setq gc-cons-threshold 100000000)
+     (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
-    (use-package lsp-ui)
-    (use-package helm-lsp)
-  #+end_src
-* Fun
-  snow.el
-  #+begin_src emacs-lisp :tangle yes
-    (load "~/.emacs.d/lisp/snow.el")
-  #+end_src
+     ;; languages
+     ;; java
+     (use-package lsp-java)
+     ;; haskell
+     (use-package lsp-haskell)
+     (setq lsp-haskell-process-path-hie "hie-wrapper")
+     ;;rust
+     (use-package rust-mode)
+   #+end_src
