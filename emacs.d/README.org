@@ -18,6 +18,7 @@
 ** Essential Settings
 *** Misc Settings
     #+begin_src emacs-lisp :tangle yes
+      (add-to-list 'load-path "~/.emacs.d/lisp/")
       (setq inhibit-splash-screen t
             inhibit-startup-message t
             inhibit-startup-echo-area-message "wolfe")
@@ -58,9 +59,6 @@
         ;; Enable flashing mode-line on errors
         (doom-themes-visual-bell-config)
 
-        ;; neotree
-        (doom-themes-neotree-config)
-
         ;; or for treemacs users
         (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
         (doom-themes-treemacs-config)
@@ -81,6 +79,7 @@
      (use-package evil
        :init 
        (setq evil-want-keybinding nil)
+       (setq evil-respect-visual-line-mode t)
        :config
        (evil-mode 1))
 
@@ -149,8 +148,7 @@
   [[http://company-mode.github.io/][Company]]: An autocompletion framework
   #+begin_src emacs-lisp :tangle yes
     (use-package company
-      :init
-      (global-company-mode)
+      :init (global-company-mode)
       :config
       (setq company-minimum-prefix-length 1)
       (setq company-idle-delay 0.0))
@@ -181,11 +179,6 @@
   all-the-icons
   #+begin_src emacs-lisp :tangle yes
     (use-package all-the-icons)
-  #+end_src
-
-  Neotree
-  #+begin_src emacs-lisp :tangle yes
-    (use-package neotree)
   #+end_src
 
   Treemacs: in-frame file browser similar to NERDTree
@@ -280,8 +273,18 @@
       (nlinum-relative-setup-evil)
       (add-hook 'prog-mode-hook 'nlinum-relative-mode))
   #+end_src
+  
+  [[https://github.com/joostkremers/writeroom-mode][writeroom-mode]]
+  #+begin_src emacs-lisp :tangle yes
+    (use-package writeroom-mode)
+  #+end_src
+  
+  [[https://github.com/jwiegley/emacs-chess][chess]]
+  #+begin_src emacs-lisp :tangle yes
+    (use-package chess)
+  #+end_src
 * Language Support
-** LSP
+** LSP base config
    #+begin_src emacs-lisp :tangle yes
      ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
      (setq lsp-keymap-prefix "C-l")
@@ -293,7 +296,17 @@
                 (rust-mode . lsp)
                 (c-mode . lsp)
                 (js-mode . lsp)
-                (typescript-mode . lsp))
+                (typescript-mode . lsp)
+                (csharp-mode . lsp))
+         :config
+         ;; Support Lombok in our projects, among other things
+         (setq lsp-java-vmargs
+             (list
+                 "-noverify"
+                 "-Xmx1G"
+                 "-XX:+UseG1GC"
+                 "-XX:+UseStringDeduplication"
+                 "-javaagent:/home/mthomson/dev/lombok/lombok.jar"))
          :commands lsp)
 
      ;; optionally
@@ -305,13 +318,31 @@
      ;; performance tuning
      (setq gc-cons-threshold 100000000)
      (setq read-process-output-max (* 1024 1024)) ;; 1mb
-
-     ;; languages
-     ;; java
+  #+end_src
+** Debugging  
+   #+begin_src emacs-lisp :tangle yes
+     (use-package dap-mode
+       :ensure t :after lsp-mode
+       :config
+       (require 'dap-java)
+       (dap-mode t)
+       (dap-ui-mode t))
+   #+end_src
+** Java  
+   #+begin_src emacs-lisp :tangle yes
      (use-package lsp-java)
-     ;; haskell
-     (use-package lsp-haskell)
-     (setq lsp-haskell-process-path-hie "hie-wrapper")
-     ;;rust
+   #+end_src
+** Rust
+   #+begin_src emacs-lisp :tangle yes
      (use-package rust-mode)
    #+end_src
+** C#
+   #+begin_src emacs-lisp :tangle yes
+     (use-package csharp-mode)
+   #+end_src
+   
+   
+   
+   
+   
+   

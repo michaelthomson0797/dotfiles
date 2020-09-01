@@ -7,7 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ARCH_DEPENDENCIES=
 DEBIAN_DEPENDENCIES=
-DEPENDENCIES=(zsh bash emacs vim git cmake llvm clang wget ttf-hack rust stack ccls)
+DEPENDENCIES=(zsh ttf-hack curl)
 
 ################################################################################
 ### GUI and Shell
@@ -45,12 +45,10 @@ then
 else
     if command -v zsh > /dev/null 2>&1
     then
-        read -p "Make zsh the default shell? (y/n) " yesorno
+        read -p "set up ohmyzsh? (y/n) " yesorno
         case $yesorno in
             y)
-                ZSH_PATH=`which zsh`
-                echo "setting zsh as default shell"
-                chsh $USER -s $ZSH_PATH
+                sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
                 ;;
             *)
                 echo "zsh will not be set to default"

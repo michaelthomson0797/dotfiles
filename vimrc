@@ -15,7 +15,7 @@ call plug#end()
 " }}}
 " Colors {{{
 syntax enable
-colorscheme badwolf
+colorscheme nord
 set termguicolors
 " }}}
 " Spaces & Tabs {{{
